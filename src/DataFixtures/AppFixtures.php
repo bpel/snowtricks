@@ -30,8 +30,6 @@ class AppFixtures extends Fixture
             for ($k = 1; $k <= mt_rand(2,5); $k++) {
                 $trick = new Trick();
                 $trick->setNameTrick('Figure '. $faker->city)
-                      ->setIdIllustration(null)
-                      ->setUrl(null)
                       ->setTypeTrick($typeTrick)
                       ->setDescription("Description figure");
                 $manager->persist($trick);
