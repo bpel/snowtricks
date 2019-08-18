@@ -2,8 +2,6 @@
 
 namespace App\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -24,60 +22,58 @@ class TypeTrick
     private $nameTypetrick;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Trick", mappedBy="typeTrick")
+     * @ORM\Column(type="string", length=100)
      */
     private $description;
 
-    public function __construct()
-    {
-        $this->description = new ArrayCollection();
-    }
-
-    public function getId(): ?int
+    /**
+     * @return mixed
+     */
+    public function getId()
     {
         return $this->id;
     }
 
-    public function getNameTypetrick(): ?string
+    /**
+     * @param mixed $id
+     */
+    public function setId($id): void
+    {
+        $this->id = $id;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getNameTypetrick()
     {
         return $this->nameTypetrick;
     }
 
-    public function setNameTypetrick(string $nameTypetrick): self
+    /**
+     * @param mixed $nameTypetrick
+     */
+    public function setNameTypetrick($nameTypetrick): void
     {
         $this->nameTypetrick = $nameTypetrick;
-
-        return $this;
     }
 
     /**
-     * @return Collection|Trick[]
+     * @return mixed
      */
-    public function getDescription(): Collection
+    public function getDescription()
     {
         return $this->description;
     }
 
-    public function addDescription(Trick $description): self
+    /**
+     * @param mixed $description
+     */
+    public function setDescription($description): void
     {
-        if (!$this->description->contains($description)) {
-            $this->description[] = $description;
-            $description->setTypeTrick($this);
-        }
-
-        return $this;
+        $this->description = $description;
     }
 
-    public function removeDescription(Trick $description): self
-    {
-        if ($this->description->contains($description)) {
-            $this->description->removeElement($description);
-            // set the owning side to null (unless already changed)
-            if ($description->getTypeTrick() === $this) {
-                $description->setTypeTrick(null);
-            }
-        }
 
-        return $this;
-    }
+
 }

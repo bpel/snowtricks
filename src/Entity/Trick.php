@@ -5,6 +5,7 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\JoinColumn;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\TrickRepository")
@@ -24,69 +25,154 @@ class Trick
     private $nameTrick;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\TypeTrick", inversedBy="description")
+     * @ORM\ManyToOne(targetEntity="TypeTrick", fetch="EAGER",cascade={"persist"})
+     * @JoinColumn(name="typeTrick", referencedColumnName="id")
      */
     private $typeTrick;
 
     /**
-     * @ORM\Column(type="text", nullable=true)
+     * @ORM\Column(type="string", length=100)
      */
     private $description;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="Illustration", fetch="EAGER",cascade={"persist"})
+     * @JoinColumn(name="illustration", referencedColumnName="id")
+     */
+    private $illustration;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\IllustrationTrick", mappedBy="idTrick")
+     * @ORM\ManyToMany(targetEntity="Video", fetch="EAGER",cascade={"persist"})
+     * @JoinColumn(name="video", referencedColumnName="id")
      */
-    private $illustrationTricks;
-
-    /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\VideoTrick", mappedBy="idTrick")
-     */
-    private $videoTricks;
+    private $video;
 
     public function __construct()
     {
-        $this->illustrationTricks = new ArrayCollection();
-        $this->videoTricks = new ArrayCollection();
+        $this->video = new ArrayCollection();
+        $this->illustration = new ArrayCollection();
     }
 
-    public function getId(): ?int
+    /**
+     * @return mixed
+     */
+    public function getId()
     {
         return $this->id;
     }
 
-    public function getNameTrick(): ?string
+    /**
+     * @param mixed $id
+     */
+    public function setId($id): void
+    {
+        $this->id = $id;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getNameTrick()
     {
         return $this->nameTrick;
     }
 
-    public function setNameTrick(string $nameTrick): self
+    /**
+     * @param mixed $nameTrick
+     */
+    public function setNameTrick($nameTrick): void
     {
         $this->nameTrick = $nameTrick;
-
-        return $this;
     }
 
-    public function getTypeTrick(): ?TypeTrick
+    /**
+     * @return mixed
+     */
+    public function getTypeTrick()
     {
         return $this->typeTrick;
     }
 
-    public function setTypeTrick(?TypeTrick $typeTrick): self
+    /**
+     * @param mixed $typeTrick
+     */
+    public function setTypeTrick($typeTrick): void
     {
         $this->typeTrick = $typeTrick;
-
-        return $this;
     }
 
-    public function getDescription(): ?string
+    /**
+     * @return mixed
+     */
+    public function getDescription()
     {
         return $this->description;
     }
 
-    public function setDescription(?string $description): self
+    /**
+     * @param mixed $description
+     */
+    public function setDescription($description): void
     {
         $this->description = $description;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getVideo()
+    {
+        return $this->video;
+    }
+
+    /**
+     * @param mixed $video
+     */
+    public function setVideo($video): void
+    {
+        $this->video = $video;
+    }
+
+    public function addVideo(Video $video): self
+    {
+        if (!$this->video->contains($video)) {
+            $this->video[] = $video;
+        }
+
+        return $this;
+    }
+
+    public function removeVideo(Video $video): self
+    {
+        if ($this->video->contains($video)) {
+            $this->video->removeElement($video);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Illustration[]
+     */
+    public function getIllustration(): Collection
+    {
+        return $this->illustration;
+    }
+
+    public function addIllustration(Illustration $illustration): self
+    {
+        if (!$this->illustration->contains($illustration)) {
+            $this->illustration[] = $illustration;
+        }
+
+        return $this;
+    }
+
+    public function removeIllustration(Illustration $illustration): self
+    {
+        if ($this->illustration->contains($illustration)) {
+            $this->illustration->removeElement($illustration);
+        }
 
         return $this;
     }

@@ -2,9 +2,8 @@
 
 namespace App\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\JoinColumn;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\VideoRepository")
@@ -24,9 +23,10 @@ class Video
     private $url;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\PlatformVideo", inversedBy="videos")
+     * @ORM\ManyToOne(targetEntity="App\Entity\PlatformVideo", fetch="EAGER")
+     * @JoinColumn(name="platformVideo", referencedColumnName="id")
      */
-    private $idPlatformVideo;
+    private $platformVideo;
 
     /**
      * @return mixed
@@ -34,6 +34,14 @@ class Video
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * @param mixed $id
+     */
+    public function setId($id): void
+    {
+        $this->id = $id;
     }
 
     /**
@@ -55,18 +63,19 @@ class Video
     /**
      * @return mixed
      */
-    public function getIdPlatformVideo()
+    public function getPlatformVideo()
     {
-        return $this->idPlatformVideo;
+        return $this->platformVideo;
     }
 
     /**
-     * @param mixed $idPlatformVideo
+     * @param mixed $platformVideo
      */
-    public function setIdPlatformVideo($idPlatformVideo): void
+    public function setPlatformVideo($platformVideo): void
     {
-        $this->idPlatformVideo = $idPlatformVideo;
+        $this->platformVideo = $platformVideo;
     }
+
 
 
 }

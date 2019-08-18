@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\JoinColumn;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\MessageRepository")
@@ -17,14 +18,16 @@ class Message
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="messages")
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="id")
+     * @JoinColumn(name="user", referencedColumnName="id")
      */
-    private $idUser;
+    private $user;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Trick", inversedBy="message", cascade={"persist", "remove"})
+     * @ORM\ManyToOne(targetEntity="App\Entity\Trick", inversedBy="id")
+     * @JoinColumn(name="trick", referencedColumnName="id")
      */
-    private $idTrick;
+    private $trick;
 
     /**
      * @ORM\Column(type="text", nullable=true)
@@ -36,56 +39,84 @@ class Message
      */
     private $dateCreate;
 
-    public function getId(): ?int
+    /**
+     * @return mixed
+     */
+    public function getId()
     {
         return $this->id;
     }
 
-    public function getIdUser(): ?User
+    /**
+     * @param mixed $id
+     */
+    public function setId($id): void
     {
-        return $this->idUser;
+        $this->id = $id;
     }
 
-    public function setIdUser(?User $idUser): self
+    /**
+     * @return mixed
+     */
+    public function getUser()
     {
-        $this->idUser = $idUser;
-
-        return $this;
+        return $this->user;
     }
 
-    public function getIdTrick(): ?Trick
+    /**
+     * @param mixed $user
+     */
+    public function setUser($user): void
     {
-        return $this->idTrick;
+        $this->user = $user;
     }
 
-    public function setIdTrick(?Trick $idTrick): self
+    /**
+     * @return mixed
+     */
+    public function getTrick()
     {
-        $this->idTrick = $idTrick;
-
-        return $this;
+        return $this->trick;
     }
 
-    public function getMessage(): ?string
+    /**
+     * @param mixed $trick
+     */
+    public function setTrick($trick): void
+    {
+        $this->trick = $trick;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getMessage()
     {
         return $this->message;
     }
 
-    public function setMessage(?string $message): self
+    /**
+     * @param mixed $message
+     */
+    public function setMessage($message): void
     {
         $this->message = $message;
-
-        return $this;
     }
 
-    public function getDateCreate(): ?\DateTimeInterface
+    /**
+     * @return mixed
+     */
+    public function getDateCreate()
     {
         return $this->dateCreate;
     }
 
-    public function setDateCreate(?\DateTimeInterface $dateCreate): self
+    /**
+     * @param mixed $dateCreate
+     */
+    public function setDateCreate($dateCreate): void
     {
         $this->dateCreate = $dateCreate;
-
-        return $this;
     }
+
 }

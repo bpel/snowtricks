@@ -19,9 +19,19 @@ class Illustration
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="string", length=255)
      */
-    private $linkIllustration;
+    private $url;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="Trick", mappedBy="illustration")
+     */
+    private $trick;
+
+    public function __construct()
+    {
+        $this->trick = new ArrayCollection();
+    }
 
     /**
      * @return mixed
@@ -32,21 +42,55 @@ class Illustration
     }
 
     /**
-     * @return mixed
+     * @param mixed $id
      */
-    public function getLinkIllustration()
+    public function setId($id): void
     {
-        return $this->linkIllustration;
+        $this->id = $id;
     }
 
     /**
-     * @param mixed $linkIllustration
+     * @return mixed
      */
-    public function setLinkIllustration($linkIllustration): void
+    public function getUrl()
     {
-        $this->linkIllustration = $linkIllustration;
+        return $this->url;
     }
 
+    /**
+     * @param mixed $url
+     */
+    public function setUrl($url): void
+    {
+        $this->url = $url;
+    }
 
+    /**
+     * @return Collection|Trick[]
+     */
+    public function getTrick(): Collection
+    {
+        return $this->trick;
+    }
+
+    public function addTrick(Trick $trick): self
+    {
+        if (!$this->trick->contains($trick)) {
+            $this->trick[] = $trick;
+            $trick->addIllustration($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTrick(Trick $trick): self
+    {
+        if ($this->trick->contains($trick)) {
+            $this->trick->removeElement($trick);
+            $trick->removeIllustration($this);
+        }
+
+        return $this;
+    }
 
 }

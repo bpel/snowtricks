@@ -2,9 +2,8 @@
 
 namespace App\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\JoinColumn;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
@@ -19,6 +18,11 @@ class User
     private $id;
 
     /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $email;
+
+    /**
      * @ORM\Column(type="string", length=100)
      */
     private $nameUser;
@@ -29,14 +33,10 @@ class User
     private $lastnameUser;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\ManyToOne(targetEntity="Illustration", fetch="EAGER",cascade={"persist"})
+     * @JoinColumn(name="illustration", referencedColumnName="id")
      */
-    private $idIllustration;
-
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Message", mappedBy="idUser")
-     */
-    private $messages;
+    private $illustration;
 
     /**
      * @ORM\Column(type="string", length=150)
@@ -44,108 +44,99 @@ class User
     private $password;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @return mixed
      */
-    private $email;
-
-    public function __construct()
-    {
-        $this->messages = new ArrayCollection();
-    }
-
-    public function getId(): ?int
+    public function getId()
     {
         return $this->id;
     }
 
-    public function getNameUser(): ?string
+    /**
+     * @param mixed $id
+     */
+    public function setId($id): void
     {
-        return $this->nameUser;
-    }
-
-    public function setNameUser(string $nameUser): self
-    {
-        $this->nameUser = $nameUser;
-
-        return $this;
-    }
-
-    public function getLastnameUser(): ?string
-    {
-        return $this->lastnameUser;
-    }
-
-    public function setLastnameUser(string $lastnameUser): self
-    {
-        $this->lastnameUser = $lastnameUser;
-
-        return $this;
-    }
-
-    public function getIdIllustration(): ?int
-    {
-        return $this->idIllustration;
-    }
-
-    public function setIdIllustration(?int $idIllustration): self
-    {
-        $this->idIllustration = $idIllustration;
-
-        return $this;
+        $this->id = $id;
     }
 
     /**
-     * @return Collection|Message[]
+     * @return mixed
      */
-    public function getMessages(): Collection
-    {
-        return $this->messages;
-    }
-
-    public function addMessage(Message $message): self
-    {
-        if (!$this->messages->contains($message)) {
-            $this->messages[] = $message;
-            $message->setIdUser($this);
-        }
-
-        return $this;
-    }
-
-    public function removeMessage(Message $message): self
-    {
-        if ($this->messages->contains($message)) {
-            $this->messages->removeElement($message);
-            // set the owning side to null (unless already changed)
-            if ($message->getIdUser() === $this) {
-                $message->setIdUser(null);
-            }
-        }
-
-        return $this;
-    }
-
-    public function getPassword(): ?string
-    {
-        return $this->password;
-    }
-
-    public function setPassword(string $password): self
-    {
-        $this->password = $password;
-
-        return $this;
-    }
-
-    public function getEmail(): ?string
+    public function getEmail()
     {
         return $this->email;
     }
 
-    public function setEmail(string $email): self
+    /**
+     * @param mixed $email
+     */
+    public function setEmail($email): void
     {
         $this->email = $email;
-
-        return $this;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getNameUser()
+    {
+        return $this->nameUser;
+    }
+
+    /**
+     * @param mixed $nameUser
+     */
+    public function setNameUser($nameUser): void
+    {
+        $this->nameUser = $nameUser;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getLastnameUser()
+    {
+        return $this->lastnameUser;
+    }
+
+    /**
+     * @param mixed $lastnameUser
+     */
+    public function setLastnameUser($lastnameUser): void
+    {
+        $this->lastnameUser = $lastnameUser;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getIllustration()
+    {
+        return $this->illustration;
+    }
+
+    /**
+     * @param mixed $illustration
+     */
+    public function setIllustration($illustration): void
+    {
+        $this->illustration = $illustration;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPassword()
+    {
+        return $this->password;
+    }
+
+    /**
+     * @param mixed $password
+     */
+    public function setPassword($password): void
+    {
+        $this->password = $password;
+    }
+
 }
