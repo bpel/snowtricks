@@ -2,9 +2,13 @@
 
 namespace App\Entity;
 
+use App\Repository\IllustrationRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\IllustrationRepository")
@@ -19,9 +23,9 @@ class Illustration
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string")
      */
-    private $url;
+    private $filename;
 
     /**
      * @ORM\ManyToMany(targetEntity="Trick", mappedBy="illustration")
@@ -52,17 +56,17 @@ class Illustration
     /**
      * @return mixed
      */
-    public function getUrl()
+    public function getFilename()
     {
-        return $this->url;
+        return $this->filename;
     }
 
     /**
-     * @param mixed $url
+     * @param mixed $filename
      */
-    public function setUrl($url): void
+    public function setFilename($filename): void
     {
-        $this->url = $url;
+        $this->filename = $filename;
     }
 
     /**

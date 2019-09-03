@@ -25,7 +25,7 @@ class Trick
     private $nameTrick;
 
     /**
-     * @ORM\ManyToOne(targetEntity="TypeTrick", fetch="EAGER",cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="TypeTrick", fetch="LAZY",cascade={"persist"})
      * @JoinColumn(name="typeTrick", referencedColumnName="id")
      */
     private $typeTrick;
@@ -36,21 +36,28 @@ class Trick
     private $description;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Illustration", fetch="EAGER",cascade={"persist"})
-     * @JoinColumn(name="illustration", referencedColumnName="id")
+     * @ORM\ManyToMany(targetEntity="Illustration", fetch="LAZY",cascade={"persist"})
+     * @JoinColumn(name="illustrations", referencedColumnName="id")
      */
-    private $illustration;
+    private $illustrations;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Video", fetch="EAGER",cascade={"persist"})
-     * @JoinColumn(name="video", referencedColumnName="id")
+     * @ORM\ManyToMany(targetEntity="Video", fetch="LAZY",cascade={"persist"})
+     * @JoinColumn(name="videos", referencedColumnName="id")
      */
-    private $video;
+    private $videos;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Message", fetch="EAGER",cascade={"persist"})
+     * @JoinColumn(name="message", referencedColumnName="id")
+     */
+    private $messages;
 
     public function __construct()
     {
-        $this->video = new ArrayCollection();
-        $this->illustration = new ArrayCollection();
+        $this->videos = new ArrayCollection();
+        $this->illustrations = new ArrayCollection();
+        $this->messages = new ArrayCollection();
     }
 
     /**
@@ -120,49 +127,39 @@ class Trick
     /**
      * @return mixed
      */
-    public function getVideo()
+    public function getIllustrations()
     {
-        return $this->video;
+        return $this->illustrations;
     }
 
     /**
-     * @param mixed $video
+     * @param mixed $illustrations
      */
-    public function setVideo($video): void
+    public function setIllustrations($illustrations): void
     {
-        $this->video = $video;
-    }
-
-    public function addVideo(Video $video): self
-    {
-        if (!$this->video->contains($video)) {
-            $this->video[] = $video;
-        }
-
-        return $this;
-    }
-
-    public function removeVideo(Video $video): self
-    {
-        if ($this->video->contains($video)) {
-            $this->video->removeElement($video);
-        }
-
-        return $this;
+        $this->illustrations = $illustrations;
     }
 
     /**
-     * @return Collection|Illustration[]
+     * @return mixed
      */
-    public function getIllustration(): Collection
+    public function getVideos()
     {
-        return $this->illustration;
+        return $this->videos;
+    }
+
+    /**
+     * @param mixed $videos
+     */
+    public function setVideos($videos): void
+    {
+        $this->videos = $videos;
     }
 
     public function addIllustration(Illustration $illustration): self
     {
-        if (!$this->illustration->contains($illustration)) {
-            $this->illustration[] = $illustration;
+        if (!$this->illustrations->contains($illustration)) {
+            $this->illustrations[] = $illustration;
         }
 
         return $this;
@@ -170,8 +167,52 @@ class Trick
 
     public function removeIllustration(Illustration $illustration): self
     {
-        if ($this->illustration->contains($illustration)) {
-            $this->illustration->removeElement($illustration);
+        if ($this->illustrations->contains($illustration)) {
+            $this->illustrations->removeElement($illustration);
+        }
+
+        return $this;
+    }
+
+    public function addVideo(Video $video): self
+    {
+        if (!$this->videos->contains($video)) {
+            $this->videos[] = $video;
+        }
+
+        return $this;
+    }
+
+    public function removeVideo(Video $video): self
+    {
+        if ($this->videos->contains($video)) {
+            $this->videos->removeElement($video);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Message[]
+     */
+    public function getMessages(): Collection
+    {
+        return $this->messages;
+    }
+
+    public function addMessage(Message $message): self
+    {
+        if (!$this->messages->contains($message)) {
+            $this->messages[] = $message;
+        }
+
+        return $this;
+    }
+
+    public function removeMessage(Message $message): self
+    {
+        if ($this->messages->contains($message)) {
+            $this->messages->removeElement($message);
         }
 
         return $this;

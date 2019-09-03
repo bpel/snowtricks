@@ -18,16 +18,10 @@ class Message
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="id")
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="id", cascade={"persist"})
      * @JoinColumn(name="user", referencedColumnName="id")
      */
     private $user;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Trick", inversedBy="id")
-     * @JoinColumn(name="trick", referencedColumnName="id")
-     */
-    private $trick;
 
     /**
      * @ORM\Column(type="text", nullable=true)
@@ -74,22 +68,6 @@ class Message
     /**
      * @return mixed
      */
-    public function getTrick()
-    {
-        return $this->trick;
-    }
-
-    /**
-     * @param mixed $trick
-     */
-    public function setTrick($trick): void
-    {
-        $this->trick = $trick;
-    }
-
-    /**
-     * @return mixed
-     */
     public function getMessage()
     {
         return $this->message;
@@ -118,5 +96,4 @@ class Message
     {
         $this->dateCreate = $dateCreate;
     }
-
 }
