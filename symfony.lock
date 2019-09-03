@@ -93,58 +93,25 @@
     "doctrine/reflection": {
         "version": "v1.0.0"
     },
-    "easycorp/easy-log-handler": {
-        "version": "1.0",
-        "recipe": {
-            "repo": "github.com/symfony/recipes",
-            "branch": "master",
-            "version": "1.0",
-            "ref": "70062abc2cd58794d2a90274502f81b55cd9951b"
-        },
-        "files": [
-            "./config/packages/dev/easy_log_handler.yaml"
-        ]
-    },
-    "egulias/email-validator": {
-        "version": "2.1.10"
-    },
-    "fig/link-util": {
-        "version": "1.0.0"
-    },
     "fzaninotto/faker": {
         "version": "v1.8.0"
     },
     "jdorn/sql-formatter": {
         "version": "v1.2.17"
     },
-    "monolog/monolog": {
-        "version": "1.24.0"
-    },
     "nikic/php-parser": {
-        "version": "v4.2.2"
+        "version": "v4.2.3"
     },
     "ocramius/package-versions": {
         "version": "1.4.0"
     },
     "ocramius/proxy-manager": {
-        "version": "2.2.2"
-    },
-    "phpdocumentor/reflection-common": {
-        "version": "1.0.1"
-    },
-    "phpdocumentor/reflection-docblock": {
-        "version": "4.3.1"
-    },
-    "phpdocumentor/type-resolver": {
-        "version": "0.4.0"
+        "version": "2.2.3"
     },
     "psr/cache": {
         "version": "1.0.1"
     },
     "psr/container": {
-        "version": "1.0.0"
-    },
-    "psr/link": {
         "version": "1.0.0"
     },
     "psr/log": {
@@ -162,13 +129,7 @@
             "./config/packages/sensio_framework_extra.yaml"
         ]
     },
-    "swiftmailer/swiftmailer": {
-        "version": "v6.2.1"
-    },
     "symfony/asset": {
-        "version": "v4.3.3"
-    },
-    "symfony/browser-kit": {
         "version": "v4.3.3"
     },
     "symfony/cache": {
@@ -193,34 +154,13 @@
             "./config/bootstrap.php"
         ]
     },
-    "symfony/css-selector": {
-        "version": "v4.3.3"
-    },
     "symfony/debug": {
         "version": "v4.3.3"
-    },
-    "symfony/debug-bundle": {
-        "version": "4.1",
-        "recipe": {
-            "repo": "github.com/symfony/recipes",
-            "branch": "master",
-            "version": "4.1",
-            "ref": "f8863cbad2f2e58c4b65fa1eac892ab189971bea"
-        },
-        "files": [
-            "./config/packages/dev/debug.yaml"
-        ]
-    },
-    "symfony/debug-pack": {
-        "version": "v1.0.7"
     },
     "symfony/dependency-injection": {
         "version": "v4.3.3"
     },
     "symfony/doctrine-bridge": {
-        "version": "v4.3.3"
-    },
-    "symfony/dom-crawler": {
         "version": "v4.3.3"
     },
     "symfony/dotenv": {
@@ -231,9 +171,6 @@
     },
     "symfony/event-dispatcher-contracts": {
         "version": "v1.1.5"
-    },
-    "symfony/expression-language": {
-        "version": "v4.3.3"
     },
     "symfony/filesystem": {
         "version": "v4.3.3"
@@ -275,12 +212,6 @@
             "./src/Kernel.php"
         ]
     },
-    "symfony/http-client": {
-        "version": "v4.3.3"
-    },
-    "symfony/http-client-contracts": {
-        "version": "v1.1.5"
-    },
     "symfony/http-foundation": {
         "version": "v4.3.3"
     },
@@ -305,44 +236,11 @@
     "symfony/mime": {
         "version": "v4.3.3"
     },
-    "symfony/monolog-bridge": {
-        "version": "v4.3.3"
-    },
-    "symfony/monolog-bundle": {
-        "version": "3.3",
-        "recipe": {
-            "repo": "github.com/symfony/recipes",
-            "branch": "master",
-            "version": "3.3",
-            "ref": "6240c6d43e8237a32452f057f81816820fd56ab6"
-        },
-        "files": [
-            "./config/packages/dev/monolog.yaml",
-            "./config/packages/prod/monolog.yaml",
-            "./config/packages/test/monolog.yaml"
-        ]
-    },
     "symfony/options-resolver": {
         "version": "v4.3.3"
     },
     "symfony/orm-pack": {
         "version": "v1.0.6"
-    },
-    "symfony/phpunit-bridge": {
-        "version": "4.3",
-        "recipe": {
-            "repo": "github.com/symfony/recipes",
-            "branch": "master",
-            "version": "4.3",
-            "ref": "b0582341f1df39aaf3a9a866cdbe49937da35984"
-        },
-        "files": [
-            "./.env.test",
-            "./bin/phpunit",
-            "./config/bootstrap.php",
-            "./phpunit.xml.dist",
-            "./tests/.gitignore"
-        ]
     },
     "symfony/polyfill-intl-icu": {
         "version": "v1.12.0"
@@ -366,9 +264,6 @@
         "version": "v1.0.4"
     },
     "symfony/property-access": {
-        "version": "v4.3.3"
-    },
-    "symfony/property-info": {
         "version": "v4.3.3"
     },
     "symfony/routing": {
@@ -398,23 +293,8 @@
             "./config/packages/security.yaml"
         ]
     },
-    "symfony/security-core": {
-        "version": "v4.3.3"
-    },
-    "symfony/security-csrf": {
-        "version": "v4.3.3"
-    },
-    "symfony/security-guard": {
-        "version": "v4.3.3"
-    },
     "symfony/security-http": {
         "version": "v4.3.3"
-    },
-    "symfony/serializer": {
-        "version": "v4.3.3"
-    },
-    "symfony/serializer-pack": {
-        "version": "v1.0.2"
     },
     "symfony/service-contracts": {
         "version": "v1.1.5"
@@ -422,35 +302,8 @@
     "symfony/stopwatch": {
         "version": "v4.3.3"
     },
-    "symfony/swiftmailer-bundle": {
-        "version": "2.5",
-        "recipe": {
-            "repo": "github.com/symfony/recipes",
-            "branch": "master",
-            "version": "2.5",
-            "ref": "429afc6c6778a1fdddb52a4f708cd94ff2c9960f"
-        },
-        "files": [
-            "./config/packages/dev/swiftmailer.yaml",
-            "./config/packages/swiftmailer.yaml",
-            "./config/packages/test/swiftmailer.yaml"
-        ]
-    },
-    "symfony/test-pack": {
-        "version": "v1.0.6"
-    },
-    "symfony/translation": {
-        "version": "3.3",
-        "recipe": {
-            "repo": "github.com/symfony/recipes",
-            "branch": "master",
-            "version": "3.3",
-            "ref": "2ad9d2545bce8ca1a863e50e92141f0b9d87ffcd"
-        },
-        "files": [
-            "./config/packages/translation.yaml",
-            "./translations/.gitignore"
-        ]
+    "symfony/templating": {
+        "version": "v4.3.3"
     },
     "symfony/translation-contracts": {
         "version": "v1.1.5"
@@ -491,9 +344,6 @@
     "symfony/var-exporter": {
         "version": "v4.3.3"
     },
-    "symfony/web-link": {
-        "version": "v4.3.3"
-    },
     "symfony/web-profiler-bundle": {
         "version": "3.3",
         "recipe": {
@@ -517,14 +367,29 @@
             "ref": "dae9b39fd6717970be7601101ce5aa960bf53d9a"
         }
     },
+    "symfony/webpack-encore-bundle": {
+        "version": "1.0",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "1.0",
+            "ref": "faa1c4972a2b855edc2e113bcf9e1d84b02bf1de"
+        },
+        "files": [
+            "./assets/css/app.css",
+            "./assets/js/app.js",
+            "./config/packages/assets.yaml",
+            "./config/packages/prod/webpack_encore.yaml",
+            "./config/packages/webpack_encore.yaml",
+            "./package.json",
+            "./webpack.config.js"
+        ]
+    },
     "symfony/yaml": {
         "version": "v4.3.3"
     },
     "twig/twig": {
         "version": "v2.11.3"
-    },
-    "webmozart/assert": {
-        "version": "1.4.0"
     },
     "zendframework/zend-code": {
         "version": "3.3.1"

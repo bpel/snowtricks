@@ -1,0 +1,61 @@
+{% extends 'base.html.twig' %}
+        {% block body %}
+<div class="my-3 my-md-5">
+    <div class="container">
+        <div class="page-header">
+            <h1 class="page-title">
+                Figure
+            </h1>
+        </div>
+                            <div class="container">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h3 class="card-title">Figure</h3>
+                                        <div class="card-options">
+                                            <a href="#" class="card-options-collapse" data-toggle="card-collapse"><i class="fe fe-chevron-up"></i></a>
+                                            <a href="#" class="card-options-remove" data-toggle="card-remove"><i class="fe fe-x"></i></a>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                    </div>
+                                </div>
+
+                                {% block messages_users %}
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h3 class="card-title">Messages</h3>
+                                        </div>
+                                        {% if trick.messages is not empty %}
+                                            {% for message in trick.messages %}
+                                                <li class="list-group-item py-5">
+                                                    <div class="media">
+                                                        <div class="media-object avatar avatar-md mr-4" style="background-image: url(demo/faces/male/16.jpg)"></div>
+                                                        <div class="media-body">
+                                                            <div class="media-heading">
+                                                                <small class="float-right text-muted">{{ message.dateCreate|date('d/m/Y h:i') }}</small>
+                                                                <h5>prenom</h5>
+                                                            </div>
+                                                            <div>
+                                                                {{ message.message }}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            {% endfor %}
+                                        {% else %}
+                                            <div class="container">
+                                                <div class="alert alert-icon alert-info" role="alert">
+                                                    <i class="fe fe-alert-triangle mr-2" aria-hidden="true"></i> Pas encore de message
+                                                </div>
+                                            </div>
+                                        {% endif %}
+                                        <p>Formulaire création message</p>
+                                        {{ form_start(form) }}
+
+                                        {{ form_widget(form) }}
+
+                                        {{ form_end(form) }}
+                                    </div>
+
+                                {% endblock %}
+{% endblock %}

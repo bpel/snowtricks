@@ -1,0 +1,20 @@
+@import "~bootstrap/dist/css/bootstrap.css";
+@import "~tabler-ui/dist/assets/css/dashboard.css";
+@import "~@fortawesome/fontawesome-pro/css/all.css";
+
+pre {
+    text-shadow: none;
+}
+
+.card-img-snowtricks {
+    height: 175px;
+}
+
+.testsnowtricks {
+    background: #467fcf;
+}
+
+.header-brand {
+    color: white;
+    text-transform: uppercase;
+}

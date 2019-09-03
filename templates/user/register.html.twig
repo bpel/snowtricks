@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} {% endblock %}
+
+{% block body %}
+
+    <div class="container">
+        <div class="card-header">
+            <h3 class="card-title">Register</h3>
+        </div>
+        <div class="card-body">
+
+            {{ form_start(form) }}
+            {{ form_widget(form) }}
+            <button type="submit" class="btn btn-primary">Inscription</button>
+            {{ form_end(form) }}
+        </div>
+    </div>
+
+{% endblock %}
