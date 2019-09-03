@@ -15,10 +15,17 @@ class IllustrationFixtures extends Fixture
         for ($i = 1; $i<=40;$i++)
         {
             $illustration = new Illustration();
-            $illustration->setUrl($faker->url);
+            $illustration->setFilename($faker->numberBetween(1,15).'.jpg');
 
             $manager->persist($illustration);
             $this->addReference('illustration'.$i, $illustration);
+        }
+
+        for ($j =1; $j <= 15; $j++) {
+            $illustrationUser = new Illustration();
+            $illustrationUser->setFilename("user".$j.".jpg");
+            $manager->persist($illustrationUser);
+            $this->addReference('illustrationUser'.$j, $illustrationUser);
         }
 
         $manager->flush();
