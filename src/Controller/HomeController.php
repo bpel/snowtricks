@@ -2,18 +2,27 @@
 
 namespace App\Controller;
 
+use App\Entity\Trick;
+use App\Repository\TrickRepository;
+use Doctrine\ORM\EntityManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
 class HomeController extends AbstractController
 {
     /**
-     * @Route("/home", name="home")
+     * @Route("/", name="home")
      */
     public function index()
     {
-        return $this->render('home/index.html.twig', [
-            'controller_name' => 'HomeController',
+        $userLogged = $this->getUser();
+
+        $tricks = $this->getDoctrine()->getRepository(Trick::class)->findAllTricks();
+
+        return $this->render('index.html.twig', [
+            'tricks' => $tricks,
+            'namePage' => 'home',
+            'userLogged' => $userLogged
         ]);
     }
 }
