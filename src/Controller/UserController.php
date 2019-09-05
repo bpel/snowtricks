@@ -76,12 +76,6 @@ class UserController extends AbstractController
      */
     public function logout()
     {
-        $em = $this->getDoctrine()->getManager();
 
-        $users = $em->getRepository(User::class)->findAll();
-
-        return $this->render('user/listUsers.html.twig', [
-            'users' => $users,
-        ]);
     }
 }

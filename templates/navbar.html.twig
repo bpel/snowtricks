@@ -3,9 +3,9 @@
         <div class="row align-items-center">
             <div class="col-lg-3 ml-auto">
                 <div class="col-lg order-lg-first">
-                    {% if userLogged is defined %}
+                    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
                         <ul class="nav nav-tabs border-0 flex-column flex-lg-row">
-                                <a href="" class="nav-link"><i class="fad fa-user-circle"></i> {% if userLogged is not empty %} {{ userLogged.nameuser }} {{ userLogged.lastnameuser }} {% endif %}</a>
+                                <a href="" class="nav-link"><i class="fad fa-user-circle"></i> {{ app.user.nameuser }} {{ app.user.lastnameuser }}</a>
                         </ul>
                     {% else %}
                         <ul class="nav nav-tabs border-0 flex-column flex-lg-row">

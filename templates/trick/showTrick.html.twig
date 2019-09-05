@@ -17,6 +17,7 @@
                                         </div>
                                     </div>
                                     <div class="card-body">
+                                        {{ trick.id }}
                                     </div>
                                 </div>
 
@@ -25,15 +26,19 @@
                                         <div class="card-header">
                                             <h3 class="card-title">Messages</h3>
                                         </div>
-                                        {% if trick.messages is not empty %}
+                                        {% if trick.messages is defined %}
                                             {% for message in trick.messages %}
                                                 <li class="list-group-item py-5">
                                                     <div class="media">
-                                                        <div class="media-object avatar avatar-md mr-4" style="background-image: url(demo/faces/male/16.jpg)"></div>
+                                                        {% if message.user.illustration.filename is defined %}
+                                                        <div class="media-object avatar avatar-md mr-4" style="background-image: url({{ asset("build/img/")}}{{ message.user.illustration.filename }})"></div>
+                                                        {% else %}
+                                                            <div class="media-object avatar avatar-md mr-4" style="background-image: url({{ asset("build/img/No_Image_Available.jpg")}})"></div>
+                                                        {% endif %}
                                                         <div class="media-body">
                                                             <div class="media-heading">
                                                                 <small class="float-right text-muted">{{ message.dateCreate|date('d/m/Y h:i') }}</small>
-                                                                <h5>prenom</h5>
+                                                                <h5>{{ message.user.nameUser }} {{ message.user.lastnameUser }}</h5>
                                                             </div>
                                                             <div>
                                                                 {{ message.message }}

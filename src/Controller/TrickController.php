@@ -67,6 +67,87 @@ class TrickController extends AbstractController
     {
         $em = $this->getDoctrine()->getManager();
 
+        $trick = $em->getRepository(Trick::class)->findAllOneTrick($id);
+
+        $message = new Message();
+
+        $form = $this->createForm(MessageType::class, $message);
+
+        $userLogged = $this->getUser();
+
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid()) {
+            $message->setUser($userLogged);
+            $message->setDateCreate(null);
+            $manager->persist($message);
+
+            $trick->addMessage($message);
+            $manager->persist($trick);
+            $manager->flush();
+
+        }
+
+        return $this->render('trick/showTrick.html.twig', [
+            'trick' => $trick,
+            'form' => $form->createView(),
+            'namePage' => 'trick_show',
+            'userLogged' => $userLogged
+        ]);
+    }
+
+    /**
+     * @Route("/trick/edit/{id}", name="trick_edit")
+     */
+    public function edit($id, Request $request, ObjectManager $manager, UploadService $upload)
+    {
+        $userLogged = $this->getUser();
+
+        $em = $this->getDoctrine()->getManager();
+
+        $trick = $em->getRepository(Trick::class)->findAllOneTrick(['id'=>$id]);
+
+
+        dump($trick);
+        die();
+
+        $form = $this->createForm(TrickType::class, $trick);
+
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid()) {
+
+            $files = $request->files->get('trick','illustration');
+
+            foreach($trick->getVideos() as $video) {
+                $manager->persist($video);
+            }
+
+            foreach($trick->getIllustrations() as $index => $illustration) {
+                $file = $files['illustrations'][$index]['file'];
+                $newNameFile = $upload->saveFile($file);
+                $illustration->setFilename($newNameFile);
+                $manager->persist($illustration);
+            }
+            $manager->persist($trick);
+            $manager->flush();
+        }
+
+        return $this->render('trick/editTrick.html.twig', [
+            'trick' => $trick,
+            'form' => $form->createView(),
+            'namePage' => 'trick_show',
+            'userLogged' => $userLogged
+        ]);
+    }
+
+    /**
+     * @Route("/trick/delete/{id}", name="trick_delete")
+     */
+    public function delete($id, Request $request, ObjectManager $manager)
+    {
+        $em = $this->getDoctrine()->getManager();
+
         $trick = $em->getRepository(Trick::class)->findOneBy(['id'=>$id]);
 
         $message = new Message();

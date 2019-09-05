@@ -23,6 +23,10 @@ security:
                 login_path: user_login
                 check_path: user_login
 
+            logout:
+                path:   /user/logout
+                target: /
+
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#firewalls-authentication
 
