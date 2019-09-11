@@ -105,13 +105,11 @@ class TrickController extends AbstractController
 
         $em = $this->getDoctrine()->getManager();
 
-        $trick = $em->getRepository(Trick::class)->findAllOneTrick(['id'=>$id]);
-
-
-        dump($trick);
-        die();
+        $trick = $em->getRepository(Trick::class)->findAllOneTrick($id);
 
         $form = $this->createForm(TrickType::class, $trick);
+
+        dump($form);
 
         $form->handleRequest($request);
 
@@ -125,10 +123,14 @@ class TrickController extends AbstractController
 
             foreach($trick->getIllustrations() as $index => $illustration) {
                 $file = $files['illustrations'][$index]['file'];
-                $newNameFile = $upload->saveFile($file);
-                $illustration->setFilename($newNameFile);
-                $manager->persist($illustration);
+                if(!empty($file))
+                {
+                    $newNameFile = $upload->saveFile($file);
+                    $illustration->setFilename($newNameFile);
+                    $manager->persist($illustration);
+                }
             }
+
             $manager->persist($trick);
             $manager->flush();
         }
