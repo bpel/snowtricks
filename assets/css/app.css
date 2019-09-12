@@ -18,3 +18,17 @@ pre {
     color: white;
     text-transform: uppercase;
 }
+.form-card {
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    position: relative;
+    margin-bottom: 1.5rem;
+    width: 100%;
+}
+
+#trick_illustrations {
+    display: flex;
+}
+
+#trick_videos {
+    display: flex;
+}
