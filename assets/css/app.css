@@ -24,3 +24,11 @@ pre {
     margin-bottom: 1.5rem;
     width: 100%;
 }
+
+#trick_illustrations {
+    display: flex;
+}
+
+#trick_videos {
+    display: flex;
+}
