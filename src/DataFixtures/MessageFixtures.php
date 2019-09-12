@@ -17,7 +17,7 @@ class MessageFixtures extends Fixture implements DependentFixtureInterface
         {
             $message = new Message();
             $message->setMessage("message".$i);
-            $message->setDateCreate($faker->dateTimeThisYear($max = 'now', null));
+            $message->setDateCreate($faker->dateTimeThisYear('now', null));
             $message->setUser($this->getReference('user' . mt_rand('1', '15')));
             $manager->persist($message);
             $this->addReference('message'.$i, $message);
