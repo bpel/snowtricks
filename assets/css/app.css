@@ -1,0 +1,34 @@
+@import "~bootstrap/dist/css/bootstrap.css";
+@import "~tabler-ui/dist/assets/css/dashboard.css";
+@import "~@fortawesome/fontawesome-pro/css/all.css";
+
+pre {
+    text-shadow: none;
+}
+
+.card-img-snowtricks {
+    height: 175px;
+}
+
+.testsnowtricks {
+    background: #467fcf;
+}
+
+.header-brand {
+    color: white;
+    text-transform: uppercase;
+}
+.form-card {
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    position: relative;
+    margin-bottom: 1.5rem;
+    width: 100%;
+}
+
+#trick_illustrations {
+    display: flex;
+}
+
+#trick_videos {
+    display: flex;
+}

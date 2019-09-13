@@ -1,0 +1,73 @@
+{% extends 'base.html.twig' %}
+
+{% form_theme form _self %}
+
+{% block body %}
+
+<div class="container">
+    <h1>Créer une figure</h1>
+
+    {{ form_start(form) }}
+
+    {{ form_widget(form) }}
+
+    {{ form_end(form) }}
+</div>
+
+
+    {% block script %}
+
+        <script>
+            $('#add-illustration').click(function () {
+                const index = $('#trick_illustrations div.form-group').length;
+
+                const tmpl = $('#trick_illustrations').data('prototype').replace(/__name__/g, index);
+
+                $('#trick_illustrations').append(tmpl);
+            })
+
+            $('#add-video').click(function () {
+                const index1 = $('#trick_videos div.form-group').length;
+                console.log(index1);
+                const tmpl1 = $('#trick_videos').data('prototype').replace(/__name__/g, index1);
+
+                $('#trick_videos').append(tmpl1);
+            })
+        </script>
+
+    {% endblock %}
+
+
+{% endblock %}
+
+{% block _trick_illustrations_widget %}
+<p>add illustrations here</p>
+    <button type="button" class="btn btn-primary" id="add-illustration">Add illustration</button>
+{{ form_widget(form) }}
+{% endblock %}
+
+{% block _trick_videos_widget %}
+    <p>add videos here</p>
+    <button type="button" class="btn btn-primary" id="add-video">Add videos</button>
+    {{ form_widget(form) }}
+{% endblock %}
+
+{% block _trick_illustrations_entry_widget %}
+    <div class="form-group">
+        {{ form_widget(form.file) }}
+    </div>
+{% endblock %}
+
+{% block _trick_videos_entry_widget %}
+    <div class="form-group">
+        {{ form_widget(form.url) }}
+    </div>
+{% endblock %}
+
+{% block _trick_illustrations_entry_row %}
+    {{ form_widget(form) }}
+{% endblock %}
+
+{% block _trick_videos_entry_row %}
+    {{ form_widget(form) }}
+{% endblock %}

@@ -1,0 +1,56 @@
+<div class="header collapse d-lg-flex p-0" id="headerMenuCollapse">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-3 ml-auto">
+                <ul class="nav nav-tabs border-0 flex-column flex-lg-row">
+                    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                    <li class="nav-item dropdown">
+                        <a href="javascript:void(0)" class="nav-link" data-toggle="dropdown">
+                            <i class="fad fa-user"></i> {{ app.user.nameuser|capitalize }} {{ app.user.lastnameuser|upper }}
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-arrow">
+                            <a href="{{ path('user_profile') }}" class="dropdown-item "><i class="fad fa-user-circle"></i> Profil</a>
+                            <div class="dropdown-divider"></div>
+                            <a href="{{ path('user_logout') }}" class="dropdown-item "><i class="fad fa-sign-out"></i> Déconnexion</a>
+                        </div>
+                    </li>
+                    {% else %}
+                        <ul class="nav nav-tabs border-0 flex-column flex-lg-row">
+                            <li class="nav-item">
+                                <a href="{{ path('user_login') }}" class="nav-link"><i class="fad fa-sign-in"></i>  Connexion</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ path('user_register') }}" class="nav-link"><i class="fad fa-sign-out"></i>  Inscription</a>
+                            </li>
+                        </ul>
+                    {% endif %}
+                </ul>
+            </div>
+            <div class="col-lg order-lg-first">
+                <ul class="nav nav-tabs border-0 flex-column flex-lg-row">
+                    <li class="nav-item">
+                        {% if namePage is defined and namePage == "home" %}
+                            <a href="{{ path('home') }}" class="nav-link active"><i class="fad fa-home"></i>  Accueil</a>
+                        {% else %}
+                            <a href="{{ path('home') }}" class="nav-link"><i class="fad fa-home"></i>  Accueil</a>
+                        {% endif %}
+                    </li>
+                    <li class="nav-item">
+                        {% if namePage is defined and namePage == "trick_create" %}
+                            <a href="{{ path('trick_create') }}" class="nav-link active"><i class="fad fa-edit"></i>  Créer une figure</a>
+                        {% else %}
+                            <a href="{{ path('trick_create') }}" class="nav-link"><i class="fad fa-edit"></i>  Créer une figure</a>
+                        {% endif %}
+                    </li>
+                    <li class="nav-item dropdown">
+                        {% if namePage is defined and namePage == "user_list" %}
+                            <a href="{{ path('user_list') }}" class="nav-link active"><i class="fad fa-user"></i>  Utilisateurs</a>
+                        {% else %}
+                            <a href="{{ path('user_list') }}" class="nav-link"><i class="fad fa-user"></i>  Utilisateurs</a>
+                        {% endif %}
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

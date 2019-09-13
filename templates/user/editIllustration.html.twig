@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} {% endblock %}
+
+{% block body %}
+
+    <div class="container">
+        <div class="card-header">
+            <h3 class="card-title">Modifier image profil</h3>
+        </div>
+        <div class="card-body">
+            Illustration actuelle : {{ user.illustration.filename }}
+            <img src="{{ asset("build/img/")}}{{ user.illustration.filename }}" alt="img-profile-user">
+
+            {{ form_start(formEditIllustration) }}
+            {{ form_widget(formEditIllustration) }}
+            {{ form_end(formEditIllustration) }}
+        </div>
+    </div>
+
+{% endblock %}
