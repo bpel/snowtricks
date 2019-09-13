@@ -7,7 +7,7 @@ use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class UploadService {
-    private $targetDirectory;
+
     private $params;
 
     public function __construct(ParameterBagInterface $params)

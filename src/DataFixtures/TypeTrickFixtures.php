@@ -11,7 +11,7 @@ class TypeTrickFixtures extends Fixture
     {
         $listTypeTrick = ['grabs', 'rotations', 'flips','pipe','slide'];
 
-        for ($i = 0; $i<sizeof($listTypeTrick);$i++)
+        for ($i = 0; $i<count($listTypeTrick);$i++)
         {
             $typeTrick = new TypeTrick();
             $typeTrick->setDescription("description typetrick".$i);

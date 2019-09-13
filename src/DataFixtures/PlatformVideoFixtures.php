@@ -11,7 +11,7 @@ class PlatformVideoFixtures extends Fixture
     {
         $listPlatform = ['Youtube', 'Dalymotion', 'Netflix','VideoPlus','Free','Yahoo','Other'];
 
-        for ($i = 0; $i<sizeof($listPlatform);$i++)
+        for ($i = 0; $i<count($listPlatform);$i++)
         {
             $platformVideo = new PlatformVideo();
             $platformVideo->setNamePlatform($listPlatform[$i]);
