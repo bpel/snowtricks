@@ -148,11 +148,12 @@ class UserController extends AbstractController
      */
     public function profile()
     {
-        $this->userLogged();
-
-        return $this->render('user/profile.html.twig', [
-            'namePage' => 'user_profile',
-        ]);
+        if ($this->userLogged()) {
+            return $this->render('user/profile.html.twig', [
+                'namePage' => 'user_profile',
+            ]);
+        }
+        return $this->redirectToRoute('error_page_protected');
     }
 
     /**

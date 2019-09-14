@@ -149,33 +149,30 @@ class TrickController extends AbstractController
     public function delete($id, Request $request, ObjectManager $manager)
     {
         $em = $this->getDoctrine()->getManager();
-
         $trick = $em->getRepository(Trick::class)->findOneBy(['id'=>$id]);
 
-        $message = new Message();
+        if (empty($trick))
+        {
+            $message = "Suppression impossible, cette figure n'existe pas!";
 
-        $form = $this->createForm(MessageType::class, $message);
-
-        $userLogged = $this->getUser();
-
-        $form->handleRequest($request);
-
-        if($form->isSubmitted() && $form->isValid()) {
-            $message->setUser($userLogged);
-            $message->setDateCreate(null);
-            $manager->persist($message);
-
-            $trick->addMessage($message);
-            $manager->persist($trick);
-            $manager->flush();
-
+            return $this->render('index.html.twig', [
+                'tricks' => array(),
+                'namePage' => 'home',
+                'userLogged' => array(),
+                'message' => $message
+            ]);
         }
 
-        return $this->render('trick/showTrick.html.twig', [
-            'trick' => $trick,
-            'form' => $form->createView(),
-            'namePage' => 'trick_show',
-            'userLogged' => $userLogged
+        $manager->remove($trick);
+        $message = "La figure ".$trick->getNameTrick()." à été supprimée.";
+        $manager->flush();
+
+        return $this->render('index.html.twig', [
+            'tricks' => array(),
+            'namePage' => 'home',
+            'userLogged' => array(),
+            'message' => $message
         ]);
+
     }
 }
