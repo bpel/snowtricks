@@ -6,7 +6,10 @@ use App\Entity\Illustration;
 use App\Entity\User;
 use App\Form\EditIllustrationType;
 use App\Form\EditPasswordType;
+use App\Form\PasswordLostType;
+use App\Form\PasswordRecoveryType;
 use App\Form\RegisterType;
+use App\Service\PasswordService;
 use App\Service\UploadService;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityManager;
@@ -154,6 +157,39 @@ class UserController extends AbstractController
             ]);
         }
         return $this->redirectToRoute('error_page_protected');
+    }
+
+    /**
+     * @Route("/user/password/lost", name="user_password_lost")
+     */
+    public function passwordLost(Request $request, PasswordService $passwordService, $message = ""){
+        $formPasswordLost = $this->createForm(PasswordLostType::class);
+
+        $formPasswordLost->handleRequest($request);
+        if ($formPasswordLost->isSubmitted() && $formPasswordLost->isValid()) {
+            $user = $formPasswordLost->getData();
+            $message = $passwordService->passwordLost($user->getEmail());
+        }
+
+        return $this->render('user/passwordLost.html.twig', [
+            'namePage' => 'user_password_lost',
+            'user' => $this->getUser(),
+            'formPasswordLost' => $formPasswordLost->createView(),
+            'message' => $message
+        ]);
+    }
+
+    /**
+     * @Route("/user/password/recovery/token", name="user_password_recovery_token")
+     */
+    public function passwordRecoveryToken(){
+        $formPasswordRecoveryToken = $this->createForm(PasswordLostType::class);
+
+        return $this->render('user/passwordRecoveryToken.html.twig', [
+            'namePage' => 'user_password_recovery_token',
+            'user' => $this->getUser(),
+            'formPasswordRecoveryToken' => $formPasswordRecoveryToken->createView()
+        ]);
     }
 
     /**
