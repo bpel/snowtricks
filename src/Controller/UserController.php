@@ -167,8 +167,8 @@ class UserController extends AbstractController
 
         $formPasswordLost->handleRequest($request);
         if ($formPasswordLost->isSubmitted() && $formPasswordLost->isValid()) {
-            $user = $formPasswordLost->getData();
-            $message = $passwordService->passwordLost($user->getEmail());
+            $datas = $formPasswordLost->getData();
+            $message = $passwordService->passwordLost($datas->getEmail());
         }
 
         return $this->render('user/passwordLost.html.twig', [
@@ -180,15 +180,23 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/user/password/recovery/token", name="user_password_recovery_token")
+     * @Route("/user/password/recovery", name="user_password_recovery")
      */
-    public function passwordRecoveryToken(){
-        $formPasswordRecoveryToken = $this->createForm(PasswordLostType::class);
+    public function passwordRecoveryToken(Request $request, PasswordService $passwordService, $message = ""){
+        $formPasswordChange = $this->createForm(EditPasswordType::class);
 
-        return $this->render('user/passwordRecoveryToken.html.twig', [
+        $formPasswordChange->handleRequest($request);
+        if ($formPasswordChange->isSubmitted() && $formPasswordChange->isValid()) {
+            $token = $request->query->get('token');
+            $datas = $formPasswordChange->getData();
+            $message = $passwordService->passwordRecovery($datas->getPassword(), $token);
+        }
+
+        return $this->render('user/passwordRecovery.html.twig', [
             'namePage' => 'user_password_recovery_token',
             'user' => $this->getUser(),
-            'formPasswordRecoveryToken' => $formPasswordRecoveryToken->createView()
+            'formPasswordChange' => $formPasswordChange->createView(),
+            'message' => $message
         ]);
     }
 

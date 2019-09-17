@@ -19,14 +19,14 @@ class TokenPasswordLostRepository extends ServiceEntityRepository
         parent::__construct($registry, TokenPasswordLost::class);
     }
 
-    public function findAllTokenAvailable($user, $dateNow)
+    public function findAllTokenAvailableForUser($user)
     {
         return $this->createQueryBuilder('t')
             ->where('t.user = :user')
             ->andWhere('t.used = false')
-            ->andWhere('t.expirationDate > :dateNow')
+            #->andWhere('t.expirationDate > :dateNow')
             ->setParameter('user', $user)
-            ->setParameter('dateNow', $dateNow)
+            #->setParameter('t.dateNow', $dateNow)
             ->getQuery()
             ->getResult()
         ;
