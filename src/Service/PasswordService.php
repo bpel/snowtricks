@@ -5,18 +5,21 @@ namespace App\Service;
 use App\Entity\TokenPasswordLost;
 use App\Entity\User;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class PasswordService {
 
     private $manager;
     private $user;
     private $tokenPasswordLost;
+    private $encoder;
 
-    public function __construct(ManagerRegistry $managerRegistry)
+    public function __construct(ManagerRegistry $managerRegistry, UserPasswordEncoderInterface $encoder)
     {
         $this->manager = $managerRegistry->getManager();
         $this->user = new User();
         $this->tokenPasswordLost = new TokenPasswordLost();
+        $this->encoder = $encoder;
     }
 
     public function getUser()
@@ -132,16 +135,28 @@ class PasswordService {
         return $this->getDateNow()->modify('+30 minutes');
     }
 
-    public function passwordRecovery($password, $token, $message = "")
+    public function passwordRecovery($newPassword, $token, $message = "")
     {
-        if(!$this->tokenIsValid($token) || empty($token)) { return $message = "Token invalide ou expiré"; }
-        if(empty($password)) { return $message = "Mot de passe invalide"; }
+        if(!$this->tokenIsValid($token)) { return $message = "Token invalide"; }
+
+        $user = $this->getUserByToken($token);
+
+        dump($user);
+        die();
+
+        $this->changePassword($user, $newPassword);
+
+        dump("mdp changed");
+        die();
+
+        $this->setTokenUsed($token);
 
         return $message;
     }
 
     public function tokenIsValid($token)
     {
+        if(empty($token)) { return false; }
         if (!empty($this->manager->getRepository(TokenPasswordLost::class)->findBy(['token' => $token])))
         {
             return true;
@@ -156,7 +171,22 @@ class PasswordService {
 
     public function changePassword($user, $newPassword)
     {
-        #pass
+        dump($user);
+        die();
+        $user->setPassword($this->encoder->encodePassword($user,$newPassword));
+
+        die();
+
+        $user->setPassword($this->encoder->encodePassword($user,$newPassword));
+        $this->manager->persist($user);
+        $this->manager->flush();
+    }
+
+    public function getUserByToken($token)
+    {
+        $user = $this->manager->getRepository(User::class)->findUserByToken($token);
+
+        return $user;
     }
 
 }

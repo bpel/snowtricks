@@ -17,7 +17,7 @@ class TokenPasswordLost
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\User")
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", fetch="EAGER",cascade={"persist"})
      */
     private $user;
 

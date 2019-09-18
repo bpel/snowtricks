@@ -29,6 +29,18 @@ class UserRepository extends ServiceEntityRepository
             ;
     }
 
+    public function findUserByToken($token)
+    {
+        return $this->createQueryBuilder('u')
+            ->innerJoin('Token','t')
+            #->where('t.token = :token')
+            #->innerJoin('t.token','u')
+            #->setParameter('token', $token)
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
     // /**
     //  * @return User[] Returns an array of User objects
     //  */

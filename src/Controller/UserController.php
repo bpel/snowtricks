@@ -183,6 +183,16 @@ class UserController extends AbstractController
      * @Route("/user/password/recovery", name="user_password_recovery")
      */
     public function passwordRecoveryToken(Request $request, PasswordService $passwordService, $message = ""){
+
+        if (!$passwordService->tokenIsValid($request->query->get('token')))
+        {
+            return $this->render('user/passwordRecovery.html.twig', [
+                'namePage' => 'user_password_recovery_token',
+                'user' => $this->getUser(),
+                'message' => 'Token invalide'
+            ]);
+    }
+
         $formPasswordChange = $this->createForm(EditPasswordType::class);
 
         $formPasswordChange->handleRequest($request);

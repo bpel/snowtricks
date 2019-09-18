@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -43,6 +45,17 @@ class User implements UserInterface
      * @ORM\Column(type="string", length=150)
      */
     private $password;
+
+    /**
+     * @ORM\OneToMany(targetEntity="TokenPasswordLost", mappedBy="tokenPasswordLost")
+     * @JoinColumn(name="tokenPasswordLost", referencedColumnName="id", nullable=true)
+     */
+    private $tokenPasswordLost;
+
+    public function __construct()
+    {
+        $this->tokenPasswordLost = new ArrayCollection();
+    }
 
     /**
      * @return mixed
@@ -195,5 +208,36 @@ class User implements UserInterface
     public function eraseCredentials()
     {
         // TODO: Implement eraseCredentials() method.
+    }
+
+    /**
+     * @return Collection|TokenPasswordLost[]
+     */
+    public function getTokenPasswordLost(): Collection
+    {
+        return $this->tokenPasswordLost;
+    }
+
+    public function addTokenPasswordLost(TokenPasswordLost $tokenPasswordLost): self
+    {
+        if (!$this->tokenPasswordLost->contains($tokenPasswordLost)) {
+            $this->tokenPasswordLost[] = $tokenPasswordLost;
+            $tokenPasswordLost->setTokenPasswordLost($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTokenPasswordLost(TokenPasswordLost $tokenPasswordLost): self
+    {
+        if ($this->tokenPasswordLost->contains($tokenPasswordLost)) {
+            $this->tokenPasswordLost->removeElement($tokenPasswordLost);
+            // set the owning side to null (unless already changed)
+            if ($tokenPasswordLost->getTokenPasswordLost() === $this) {
+                $tokenPasswordLost->setTokenPasswordLost(null);
+            }
+        }
+
+        return $this;
     }
 }

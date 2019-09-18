@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\TokenPasswordLost;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ORM\Query\AST\Join;
 
 /**
  * @method TokenPasswordLost|null find($id, $lockMode = null, $lockVersion = null)
@@ -30,5 +31,17 @@ class TokenPasswordLostRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult()
         ;
+    }
+
+    public function findUserByToken($token)
+    {
+        return $this->createQueryBuilder('t')
+            ->select('t','u')
+            ->where('t.token = :token')
+            ->innerJoin('t.user','u')
+            ->setParameter('token', $token)
+            ->getQuery()
+            ->getOneOrNullResult()
+            ;
     }
 }
