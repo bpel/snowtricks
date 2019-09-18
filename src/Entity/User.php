@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Twig\Token;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
@@ -47,7 +48,7 @@ class User implements UserInterface
     private $password;
 
     /**
-     * @ORM\OneToMany(targetEntity="TokenPasswordLost", mappedBy="tokenPasswordLost")
+     * @ORM\ManyToMany(targetEntity="TokenPasswordLost", fetch="EAGER",cascade={"persist"})
      * @JoinColumn(name="tokenPasswordLost", referencedColumnName="id", nullable=true)
      */
     private $tokenPasswordLost;
@@ -55,91 +56,6 @@ class User implements UserInterface
     public function __construct()
     {
         $this->tokenPasswordLost = new ArrayCollection();
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
-     * @param mixed $id
-     */
-    public function setId($id): void
-    {
-        $this->id = $id;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getEmail()
-    {
-        return $this->email;
-    }
-
-    /**
-     * @param mixed $email
-     */
-    public function setEmail($email): void
-    {
-        $this->email = $email;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getNameUser()
-    {
-        return $this->nameUser;
-    }
-
-    /**
-     * @param mixed $nameUser
-     */
-    public function setNameUser($nameUser): void
-    {
-        $this->nameUser = $nameUser;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getLastnameUser()
-    {
-        return $this->lastnameUser;
-    }
-
-    public function getFullName()
-    {
-        return $this->getLastnameUser().' '.$this->getNameUser();
-    }
-
-    /**
-     * @param mixed $lastnameUser
-     */
-    public function setLastnameUser($lastnameUser): void
-    {
-        $this->lastnameUser = $lastnameUser;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getIllustration()
-    {
-        return $this->illustration;
-    }
-
-    /**
-     * @param mixed $illustration
-     */
-    public function setIllustration($illustration): void
-    {
-        $this->illustration = $illustration;
     }
 
     /**
@@ -210,6 +126,68 @@ class User implements UserInterface
         // TODO: Implement eraseCredentials() method.
     }
 
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function getEmail(): ?string
+    {
+        return $this->email;
+    }
+
+    public function setEmail(string $email): self
+    {
+        $this->email = $email;
+
+        return $this;
+    }
+
+    public function getNameUser(): ?string
+    {
+        return $this->nameUser;
+    }
+
+    public function setNameUser(string $nameUser): self
+    {
+        $this->nameUser = $nameUser;
+
+        return $this;
+    }
+
+    public function getLastnameUser(): ?string
+    {
+        return $this->lastnameUser;
+    }
+
+    public function setLastnameUser(string $lastnameUser): self
+    {
+        $this->lastnameUser = $lastnameUser;
+
+        return $this;
+    }
+
+    public function getIllustration(): ?Illustration
+    {
+        return $this->illustration;
+    }
+
+    public function setIllustration(?Illustration $illustration): self
+    {
+        $this->illustration = $illustration;
+
+        return $this;
+    }
+
+    public function addTokenPasswordLost(TokenPasswordLost $tokenPasswordLost): self
+    {
+        if (!$this->tokenPasswordLost->contains($tokenPasswordLost)) {
+            $this->tokenPasswordLost[] = $tokenPasswordLost;
+        }
+
+        return $this;
+    }
+
     /**
      * @return Collection|TokenPasswordLost[]
      */
@@ -218,12 +196,9 @@ class User implements UserInterface
         return $this->tokenPasswordLost;
     }
 
-    public function addTokenPasswordLost(TokenPasswordLost $tokenPasswordLost): self
+    public function setTokenPasswordLost(?TokenPasswordLost $tokenPasswordLost): self
     {
-        if (!$this->tokenPasswordLost->contains($tokenPasswordLost)) {
-            $this->tokenPasswordLost[] = $tokenPasswordLost;
-            $tokenPasswordLost->setTokenPasswordLost($this);
-        }
+        $this->tokenPasswordLost = $tokenPasswordLost;
 
         return $this;
     }
@@ -232,10 +207,6 @@ class User implements UserInterface
     {
         if ($this->tokenPasswordLost->contains($tokenPasswordLost)) {
             $this->tokenPasswordLost->removeElement($tokenPasswordLost);
-            // set the owning side to null (unless already changed)
-            if ($tokenPasswordLost->getTokenPasswordLost() === $this) {
-                $tokenPasswordLost->setTokenPasswordLost(null);
-            }
         }
 
         return $this;

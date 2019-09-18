@@ -19,7 +19,7 @@ class UserRepository extends ServiceEntityRepository
         parent::__construct($registry, User::class);
     }
 
-    public function findUserByEmailDB($email)
+    public function findUserByEmail($email)
     {
         return $this->createQueryBuilder('u')
             ->where('u.email = :email')
@@ -28,14 +28,27 @@ class UserRepository extends ServiceEntityRepository
             ->getOneOrNullResult()
             ;
     }
-
+/*
     public function findUserByToken($token)
     {
         return $this->createQueryBuilder('u')
-            ->innerJoin('Token','t')
-            #->where('t.token = :token')
+            ->select('u.id')
+            #->innerJoin('Token','t')
+            ->where('t.token = :token')
             #->innerJoin('t.token','u')
-            #->setParameter('token', $token)
+            ->setParameter('tokeng', $token)
+            ->getQuery()
+            ->getOneOrNullResult()
+            ;
+    }
+*/
+    public function findAllTokenActiveForUser($idUser)
+    {
+        return $this->createQueryBuilder('u')
+            #->innerJoin('Token','t')
+            ->where('u.id = :iduser')
+            #->innerJoin('t.token','u')
+            ->setParameter('iduser', $idUser)
             ->getQuery()
             ->getResult()
             ;

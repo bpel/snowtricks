@@ -9,7 +9,8 @@ use App\Form\EditPasswordType;
 use App\Form\PasswordLostType;
 use App\Form\PasswordRecoveryType;
 use App\Form\RegisterType;
-use App\Service\PasswordService;
+use App\Service\PasswordLostService;
+use App\Service\PasswordRecoveryService;
 use App\Service\UploadService;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityManager;
@@ -162,7 +163,7 @@ class UserController extends AbstractController
     /**
      * @Route("/user/password/lost", name="user_password_lost")
      */
-    public function passwordLost(Request $request, PasswordService $passwordService, $message = ""){
+    public function passwordLost(Request $request, PasswordLostService $passwordService, $message = ""){
         $formPasswordLost = $this->createForm(PasswordLostType::class);
 
         $formPasswordLost->handleRequest($request);
@@ -182,9 +183,9 @@ class UserController extends AbstractController
     /**
      * @Route("/user/password/recovery", name="user_password_recovery")
      */
-    public function passwordRecoveryToken(Request $request, PasswordService $passwordService, $message = ""){
+    public function passwordRecoveryToken(Request $request, PasswordRecoveryService $passwordRecovery, $message = ""){
 
-        if (!$passwordService->tokenIsValid($request->query->get('token')))
+        if (!$passwordRecovery->tokenIsValid($request->query->get('token')))
         {
             return $this->render('user/passwordRecovery.html.twig', [
                 'namePage' => 'user_password_recovery_token',
@@ -199,7 +200,7 @@ class UserController extends AbstractController
         if ($formPasswordChange->isSubmitted() && $formPasswordChange->isValid()) {
             $token = $request->query->get('token');
             $datas = $formPasswordChange->getData();
-            $message = $passwordService->passwordRecovery($datas->getPassword(), $token);
+            $message = $passwordRecovery->passwordRecovery($datas->getPassword(), $token);
         }
 
         return $this->render('user/passwordRecovery.html.twig', [
