@@ -112,7 +112,7 @@ class User implements UserInterface
      */
     public function getUsername()
     {
-        return $this->getFullName();
+        return $this->getNameUser().' '.$this->getLastnameUser();
     }
 
     /**
