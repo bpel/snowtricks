@@ -35,6 +35,7 @@
                             <a href="{{ path('home') }}" class="nav-link"><i class="fad fa-home"></i>  Accueil</a>
                         {% endif %}
                     </li>
+                    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
                     <li class="nav-item">
                         {% if namePage is defined and namePage == "trick_create" %}
                             <a href="{{ path('trick_create') }}" class="nav-link active"><i class="fad fa-edit"></i>  Créer une figure</a>
@@ -42,6 +43,7 @@
                             <a href="{{ path('trick_create') }}" class="nav-link"><i class="fad fa-edit"></i>  Créer une figure</a>
                         {% endif %}
                     </li>
+                    {% endif %}
                     <li class="nav-item dropdown">
                         {% if namePage is defined and namePage == "user_list" %}
                             <a href="{{ path('user_list') }}" class="nav-link active"><i class="fad fa-user"></i>  Utilisateurs</a>

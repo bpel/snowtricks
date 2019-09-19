@@ -28,6 +28,8 @@ class TrickController extends AbstractController
     {
         $userLogged = $this->getUser();
 
+        if(empty($userLogged)) { return $this->redirectToRoute('error_page_protected'); }
+
         $trick = new Trick();
 
         $form = $this->createForm(TrickType::class, $trick);
@@ -103,25 +105,24 @@ class TrickController extends AbstractController
     {
         $userLogged = $this->getUser();
 
+        if(empty($userLogged)) { return $this->redirectToRoute('error_page_protected'); }
+
         $em = $this->getDoctrine()->getManager();
 
         $trick = $em->getRepository(Trick::class)->findAllOneTrick($id);
 
         $form = $this->createForm(TrickType::class, $trick);
 
-        dump($form);
-
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid()) {
-
             $files = $request->files->get('trick','illustration');
 
-            foreach($trick->getVideos() as $video) {
+            foreach($form->getData()->getVideos() as $video) {
                 $manager->persist($video);
             }
 
-            foreach($trick->getIllustrations() as $index => $illustration) {
+            foreach($form->getData()->getIllustrations() as $index => $illustration) {
                 $file = $files['illustrations'][$index]['file'];
                 if(!empty($file))
                 {
@@ -148,34 +149,34 @@ class TrickController extends AbstractController
      */
     public function delete($id, Request $request, ObjectManager $manager)
     {
-        $em = $this->getDoctrine()->getManager();
+        $userLogged = $this->getUser();
+        if(empty($userLogged)) { return $this->redirectToRoute('error_page_protected'); }
 
+        $em = $this->getDoctrine()->getManager();
         $trick = $em->getRepository(Trick::class)->findOneBy(['id'=>$id]);
 
-        $message = new Message();
+        if (empty($trick))
+        {
+            $message = "Suppression impossible, cette figure n'existe pas!";
 
-        $form = $this->createForm(MessageType::class, $message);
-
-        $userLogged = $this->getUser();
-
-        $form->handleRequest($request);
-
-        if($form->isSubmitted() && $form->isValid()) {
-            $message->setUser($userLogged);
-            $message->setDateCreate(null);
-            $manager->persist($message);
-
-            $trick->addMessage($message);
-            $manager->persist($trick);
-            $manager->flush();
-
+            return $this->render('index.html.twig', [
+                'tricks' => array(),
+                'namePage' => 'home',
+                'userLogged' => array(),
+                'message' => $message
+            ]);
         }
 
-        return $this->render('trick/showTrick.html.twig', [
-            'trick' => $trick,
-            'form' => $form->createView(),
-            'namePage' => 'trick_show',
-            'userLogged' => $userLogged
+        $manager->remove($trick);
+        $message = "La figure ".$trick->getNameTrick()." à été supprimée.";
+        $manager->flush();
+
+        return $this->render('index.html.twig', [
+            'tricks' => array(),
+            'namePage' => 'home',
+            'userLogged' => array(),
+            'message' => $message
         ]);
+
     }
 }
