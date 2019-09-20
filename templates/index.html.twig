@@ -40,26 +40,26 @@
                              </div>
                          </div>
                      </div>
+                     <div id="delete-modal-trick-{{ trick.id }}" class="modal fade bd-example-modal-sm" tabindex="-1" role="dialog">
+                         <div class="modal-dialog" role="document">
+                             <div class="modal-content">
+                                 <div class="modal-header">
+                                     <h5 class="modal-title">Suppression figure #{{ trick.id }}</h5>
+                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                         <span aria-hidden="true">&times;</span>
+                                     </button>
+                                 </div>
+                                 <div class="modal-body">
+                                     <p>Voulez vous vraiment supprimer la figure "<b>{{ trick.nametrick }}</b>" ?</p>
+                                 </div>
+                                 <div class="modal-footer">
+                                     <a class="btn btn-secondary" role="button" data-dismiss="modal">Annuler</a>
+                                     <a class="btn btn-danger delete-trick-modal" href="{{ path('trick_delete', {'id': trick.id}) }}" role="button">Supprimer</a>
+                                 </div>
+                             </div>
+                         </div>
+                     </div>
                  {% endfor %}
-             </div>
-         </div>
-     </div>
-     <div id="delete-modal" class="modal fade bd-example-modal-sm" tabindex="-1" role="dialog">
-         <div class="modal-dialog" role="document">
-             <div class="modal-content">
-                 <div class="modal-header">
-                     <h5 class="modal-title">Suppression figure</h5>
-                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                         <span aria-hidden="true">&times;</span>
-                     </button>
-                 </div>
-                 <div class="modal-body">
-                     <p>Voulez vous vraiment supprimer cette figure ?</p>
-                 </div>
-                 <div class="modal-footer">
-                     <a class="btn btn-secondary" role="button" data-dismiss="modal">Annuler</a>
-                     <a class="btn btn-danger" href="{{ path('trick_delete', {'id': 1}) }}" role="button">Supprimer</a>
-                 </div>
              </div>
          </div>
      </div>
@@ -68,8 +68,8 @@
          for (var i = 0; i < buttonsDeleteTrick.length; i++) {
              buttonsDeleteTrick[i].onclick = function()
              {
-                 console.log(this.);
-                 $('#delete-modal').modal('show');
+                 let idTrick = this.value;
+                 $('#delete-modal-trick-'+idTrick).modal('show');
                  console.log($.value());
              }
          }
