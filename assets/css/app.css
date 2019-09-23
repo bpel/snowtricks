@@ -32,3 +32,11 @@ pre {
 #trick_videos {
     display: flex;
 }
+
+.header-toggler {
+    color: #b5b5b5;
+}
+
+.header-toggler:hover {
+    color: #FFFFFF;
+}
