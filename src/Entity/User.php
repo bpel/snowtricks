@@ -48,17 +48,6 @@ class User implements UserInterface
     private $password;
 
     /**
-     * @ORM\ManyToMany(targetEntity="TokenPasswordLost", fetch="EAGER",cascade={"persist"})
-     * @JoinColumn(name="tokenPasswordLost", referencedColumnName="id", nullable=true)
-     */
-    private $tokenPasswordLost;
-
-    public function __construct()
-    {
-        $this->tokenPasswordLost = new ArrayCollection();
-    }
-
-    /**
      * @return mixed
      */
     public function getPassword()
@@ -175,39 +164,6 @@ class User implements UserInterface
     public function setIllustration(?Illustration $illustration): self
     {
         $this->illustration = $illustration;
-
-        return $this;
-    }
-
-    public function addTokenPasswordLost(TokenPasswordLost $tokenPasswordLost): self
-    {
-        if (!$this->tokenPasswordLost->contains($tokenPasswordLost)) {
-            $this->tokenPasswordLost[] = $tokenPasswordLost;
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|TokenPasswordLost[]
-     */
-    public function getTokenPasswordLost(): Collection
-    {
-        return $this->tokenPasswordLost;
-    }
-
-    public function setTokenPasswordLost(?TokenPasswordLost $tokenPasswordLost): self
-    {
-        $this->tokenPasswordLost = $tokenPasswordLost;
-
-        return $this;
-    }
-
-    public function removeTokenPasswordLost(TokenPasswordLost $tokenPasswordLost): self
-    {
-        if ($this->tokenPasswordLost->contains($tokenPasswordLost)) {
-            $this->tokenPasswordLost->removeElement($tokenPasswordLost);
-        }
 
         return $this;
     }

@@ -169,14 +169,26 @@ class UserController extends AbstractController
         $formPasswordLost->handleRequest($request);
         if ($formPasswordLost->isSubmitted() && $formPasswordLost->isValid()) {
             $datas = $formPasswordLost->getData();
-            $message = $passwordService->passwordLost($datas->getEmail());
+
+            $passwordService->passwordLost($datas->getEmail());
+
+            $error = $passwordService->getErrorTokenLost($datas->getEmail());
+
+            if($error)
+            {
+                $this->addFlash('error',$error);
+            }
+
+            if($error == false)
+            {
+                $this->addFlash('success',"Email avec lien de réinitialisation envoyé!");
+            }
         }
 
         return $this->render('user/passwordLost.html.twig', [
             'namePage' => 'user_password_lost',
             'user' => $this->getUser(),
             'formPasswordLost' => $formPasswordLost->createView(),
-            'message' => $message
         ]);
     }
 
@@ -187,20 +199,26 @@ class UserController extends AbstractController
 
         if (!$passwordRecovery->tokenIsValid($request->query->get('token')))
         {
+            $error = $passwordRecovery->getErrorTokenRecovery($request->query->get('token'));
+            $this->addFlash('error',$error);
+
             return $this->render('user/passwordRecovery.html.twig', [
                 'namePage' => 'user_password_recovery_token',
-                'user' => $this->getUser(),
-                'message' => 'Token invalide'
+                'user' => $this->getUser()
             ]);
-    }
+        }
 
         $formPasswordChange = $this->createForm(EditPasswordType::class);
 
         $formPasswordChange->handleRequest($request);
+
         if ($formPasswordChange->isSubmitted() && $formPasswordChange->isValid()) {
             $token = $request->query->get('token');
             $datas = $formPasswordChange->getData();
-            $message = $passwordRecovery->passwordRecovery($datas->getPassword(), $token);
+            $passwordRecovery->passwordRecovery($datas->getPassword(), $token);
+
+            $this->addFlash('success','Le mot de passe à bien été modifié.');
+            return $this->redirectToRoute("user_login");
         }
 
         return $this->render('user/passwordRecovery.html.twig', [
