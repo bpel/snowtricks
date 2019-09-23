@@ -23,14 +23,13 @@ class HomeController extends AbstractController
 
         if (empty($tricks))
         {
-            $message = "Aucune figure à afficher!";
+            $this->addFlash('info','Aucune figure à afficher.');
         }
 
         return $this->render('index.html.twig', [
             'tricks' => $tricks,
             'namePage' => 'home',
-            'userLogged' => $userLogged,
-            'message' => $message
+            'userLogged' => $userLogged
         ]);
     }
 }

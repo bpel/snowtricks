@@ -134,12 +134,13 @@ class TrickController extends AbstractController
 
             $manager->persist($trick);
             $manager->flush();
+            $this->addFlash('success','La figure '.$trick->getNameTrick().' à été modifiée.');
         }
 
         return $this->render('trick/editTrick.html.twig', [
             'trick' => $trick,
             'form' => $form->createView(),
-            'namePage' => 'trick_show',
+            'namePage' => 'trick_edit',
             'userLogged' => $userLogged
         ]);
     }
@@ -155,28 +156,16 @@ class TrickController extends AbstractController
         $em = $this->getDoctrine()->getManager();
         $trick = $em->getRepository(Trick::class)->findOneBy(['id'=>$id]);
 
-        if (empty($trick))
+        if (empty($trick) || empty($id))
         {
-            $message = "Suppression impossible, cette figure n'existe pas!";
-
-            return $this->render('index.html.twig', [
-                'tricks' => array(),
-                'namePage' => 'home',
-                'userLogged' => array(),
-                'message' => $message
-            ]);
+            $this->addFlash('error','Suppression impossible, cette figure n\'existe pas!');
+            return $this->redirectToRoute('home');
         }
 
         $manager->remove($trick);
-        $message = "La figure ".$trick->getNameTrick()." à été supprimée.";
         $manager->flush();
 
-        return $this->render('index.html.twig', [
-            'tricks' => array(),
-            'namePage' => 'home',
-            'userLogged' => array(),
-            'message' => $message
-        ]);
-
+        $this->addFlash('success',"La figure ".$trick->getNameTrick()." à été supprimée.");
+        return $this->redirectToRoute('home');
     }
 }
