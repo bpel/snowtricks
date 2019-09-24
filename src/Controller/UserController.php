@@ -102,7 +102,7 @@ class UserController extends AbstractController
             }
 
             return $this->render('user/editPassword.html.twig', [
-                'namePage' => 'user_edit_password',
+                'namePage' => 'user_password_edit',
                 'formEditPassword' => $formEditPassword->createView(),
                 'errors' => $formEditPassword->getErrors()
             ]);
@@ -138,7 +138,7 @@ class UserController extends AbstractController
             }
 
             return $this->render('user/editIllustration.html.twig', [
-                'namePage' => 'user_edit_illustration',
+                'namePage' => 'user_illustration_edit',
                 'user' => $this->getUser(),
                 'formEditIllustration' => $formEditIllustration->createView()
             ]);

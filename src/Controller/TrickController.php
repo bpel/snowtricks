@@ -71,11 +71,20 @@ class TrickController extends AbstractController
 
         $trick = $em->getRepository(Trick::class)->findAllOneTrick($id);
 
-        $message = new Message();
-
-        $form = $this->createForm(MessageType::class, $message);
-
         $userLogged = $this->getUser();
+
+        if(empty($userLogged))
+        {
+            $this->addFlash('info','Connectez-vous pour pouvoir écrire un message.');
+            return $this->render('trick/showTrick.html.twig', [
+                'trick' => $trick,
+                'namePage' => 'trick_show',
+            ]);
+        }
+
+
+        $message = new Message();
+        $form = $this->createForm(MessageType::class, $message);
 
         $form->handleRequest($request);
 
