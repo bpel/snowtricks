@@ -40,3 +40,12 @@ pre {
 .header-toggler:hover {
     color: #FFFFFF;
 }
+
+.btn-form-edit-add-element {
+    margin-bottom: 20px;
+}
+
+.img-edit-trick-table {
+    height: 100px;
+    width: 100px;
+}

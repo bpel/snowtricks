@@ -75,6 +75,10 @@ class TrickController extends AbstractController
 
         if(empty($userLogged))
         {
+            if (empty($trick->getMessages()))
+            {
+                $this->addFlash('info','Aucun message, Connectez-vous pour écrire un message.');
+            }
             $this->addFlash('info','Connectez-vous pour pouvoir écrire un message.');
             return $this->render('trick/showTrick.html.twig', [
                 'trick' => $trick,
