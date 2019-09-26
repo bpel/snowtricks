@@ -59,8 +59,7 @@
                 <th>Illustration</th>
                 <th>Fichier</th>
                 <th>Selectionner nouveau fichier</th>
-                <th></th>
-                <th></th>
+                <th>Supprimer</th>
             </tr>
             </thead>
             <tbody>
@@ -80,8 +79,7 @@
                 <th>Vidéo</th>
                 <th>Url actuel</th>
                 <th>Modifier URL</th>
-                <th></th>
-                <th></th>
+                <th>Supprimer</th>
             </tr>
             </thead>
             <tbody>
@@ -95,12 +93,9 @@
     <tr>
         <td><span class="text-muted">{{ form.vars.name }}</span></td>
         <td><img class="img-edit-trick-table" src="{{ asset("build/img/")}}{{ form.vars.value.filename|default('No_Image_Available.jpg') }}" alt="IMG_TRICK"></td>
-        <td>
-           {{ form.vars.value.filename|default("") }}
-        </td>
-        <td>
-            {{ form_widget(form.file) }}
-        </td>
+        <td>{{ form.vars.value.filename|default("") }}</td>
+        <td>{{ form_widget(form.file) }}</td>
+        <td><button class="btn btn-outline-danger btn-sm delete-button-trick" value="24"><span class="fas fa-trash"></span></button></td>
     </tr>
     {% endblock %}
 
@@ -108,12 +103,9 @@
     <tr>
         <td><span class="text-muted">{{ form.vars.name }}</span></td>
         <td>embed</td>
-        <td>
-            {{ form.vars.value.url|default("") }}
-        </td>
-        <td>
-            {{ form_widget(form.url) }}
-        </td>
+        <td>{{ form.vars.value.url|default("") }}</td>
+        <td>{{ form_widget(form.url) }}</td>
+        <td><button class="btn btn-outline-danger btn-sm delete-button-trick" value="24"><span class="fas fa-trash"></span></button></td>
     </tr>
 {% endblock %}
 
