@@ -170,9 +170,9 @@ class UserController extends AbstractController
         if ($formPasswordLost->isSubmitted() && $formPasswordLost->isValid()) {
             $datas = $formPasswordLost->getData();
 
-            $passwordService->passwordLost($datas->getEmail());
+            $passwordService->passwordLost($datas['email']);
 
-            $error = $passwordService->getErrorTokenLost($datas->getEmail());
+            $error = $passwordService->getErrorTokenLost($datas['email']);
 
             if($error)
             {
