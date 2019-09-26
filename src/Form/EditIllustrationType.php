@@ -2,7 +2,6 @@
 
 namespace App\Form;
 
-use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -15,8 +14,7 @@ class EditIllustrationType extends AbstractType
     {
         $builder
             ->add('illustration', FileType::class, [
-                'required' => true,
-                'data_class' => null
+                'required' => true
             ])
             ->add('save', SubmitType::class, [
                 'label' => 'Modifier'
@@ -27,7 +25,7 @@ class EditIllustrationType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => User::class,
+            'data_class' => null
         ]);
     }
 }

@@ -122,7 +122,7 @@ class UserController extends AbstractController
             $em = $this->getDoctrine()->getManager();
             $user = $em->getRepository(User::class)->findOneBy(['id' => $idUser]);
 
-            $formEditIllustration = $this->createForm(EditIllustrationType::class, $user);
+            $formEditIllustration = $this->createForm(EditIllustrationType::class);
 
             $formEditIllustration->handleRequest($request);
             if ($formEditIllustration->isSubmitted() && $formEditIllustration->isValid()) {
