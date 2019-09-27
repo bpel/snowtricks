@@ -21,7 +21,7 @@ class UserTest extends TestCase
 
     public function testCreateSameTrick()
     {
-        #$userRepository = $this->objectManager->getRepository(User::class);
+        $userRepository = $this->objectManager->getRepository(User::class);
 
     }
 }
