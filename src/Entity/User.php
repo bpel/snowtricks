@@ -6,11 +6,14 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\JoinColumn;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Twig\Token;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
+ * @UniqueEntity("email")
  */
 class User implements UserInterface
 {
@@ -22,7 +25,8 @@ class User implements UserInterface
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, unique=true)
+     * @Assert\Email
      */
     private $email;
 
@@ -46,17 +50,6 @@ class User implements UserInterface
      * @ORM\Column(type="string", length=150)
      */
     private $password;
-
-    /**
-     * @ORM\ManyToMany(targetEntity="TokenPasswordLost", fetch="EAGER",cascade={"persist"})
-     * @JoinColumn(name="tokenPasswordLost", referencedColumnName="id", nullable=true)
-     */
-    private $tokenPasswordLost;
-
-    public function __construct()
-    {
-        $this->tokenPasswordLost = new ArrayCollection();
-    }
 
     /**
      * @return mixed
@@ -175,39 +168,6 @@ class User implements UserInterface
     public function setIllustration(?Illustration $illustration): self
     {
         $this->illustration = $illustration;
-
-        return $this;
-    }
-
-    public function addTokenPasswordLost(TokenPasswordLost $tokenPasswordLost): self
-    {
-        if (!$this->tokenPasswordLost->contains($tokenPasswordLost)) {
-            $this->tokenPasswordLost[] = $tokenPasswordLost;
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|TokenPasswordLost[]
-     */
-    public function getTokenPasswordLost(): Collection
-    {
-        return $this->tokenPasswordLost;
-    }
-
-    public function setTokenPasswordLost(?TokenPasswordLost $tokenPasswordLost): self
-    {
-        $this->tokenPasswordLost = $tokenPasswordLost;
-
-        return $this;
-    }
-
-    public function removeTokenPasswordLost(TokenPasswordLost $tokenPasswordLost): self
-    {
-        if ($this->tokenPasswordLost->contains($tokenPasswordLost)) {
-            $this->tokenPasswordLost->removeElement($tokenPasswordLost);
-        }
 
         return $this;
     }

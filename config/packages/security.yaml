@@ -37,4 +37,10 @@ security:
     # Note: Only the *first* access control that matches will be used
     access_control:
         # - { path: ^/admin, roles: ROLE_ADMIN }
-        # - { path: ^/profile, roles: ROLE_USER }
+        - { path: ^/trick/delete, roles: ROLE_USER }
+        - { path: ^/trick/edit, roles: ROLE_USER }
+        - { path: ^/trick/new, roles: ROLE_USER }
+        - { path: ^/user/profile, roles: ROLE_USER }
+        - { path: ^/user/password/lost, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/user/password/recovery, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/user/password/change, roles: ROLE_USER }

@@ -32,3 +32,20 @@ pre {
 #trick_videos {
     display: flex;
 }
+
+.header-toggler {
+    color: #b5b5b5;
+}
+
+.header-toggler:hover {
+    color: #FFFFFF;
+}
+
+.btn-form-edit-add-element {
+    margin-bottom: 20px;
+}
+
+.img-edit-trick-table {
+    height: 100px;
+    width: 100px;
+}

@@ -50,31 +50,44 @@ class PasswordLostService {
 
     public function tokenDateExpirationPassed($expirationDateToken)
     {
-        return ($expirationDateToken < $this->dateNow);
+        $diff = date_diff($this->dateNow,$expirationDateToken);
+        $diffMin = $diff->i + ($diff->h/60);
+        return ($diffMin < 30);
     }
 
-    public function passwordLost($email, $message = "")
+    public function passwordLost($email)
     {
         $user = $this->manager->getRepository(User::class)->findUserByEmail($email);
+
         if(empty($user)) { return "Adresse email invalide"; }
-        $tokens = $user->getTokenPasswordLost();
+
+        $tokens = $this->manager->getRepository(TokenPasswordLost::class)->findTokenByUser($user);
 
         foreach ($tokens as $token) {
-            if($this->tokenDateExpirationPassed($token->getExpirationDate()) || $token->getUsed()) { return "Une demande de réinitialisation est déjà en cours!"; }
+            if($this->tokenDateExpirationPassed($token->getExpirationDate())) { return "Une demande de réinitialisation est déjà en cours!"; }
         }
 
         $tokenPasswordLost = new TokenPasswordLost();
         $tokenPasswordLost->setToken($this->getToken());
+        $tokenPasswordLost->setUser($user);
         $tokenPasswordLost->setExpirationDate($this->getDateExpiration());
+
         $this->manager->persist($tokenPasswordLost);
-
-        $tokens->add($tokenPasswordLost);
-        $this->manager->persist($user);
-
         $this->manager->flush();
+    }
 
-        return "Email avec lien de réinitialisation envoyé!";
+    public function getErrorTokenLost($email)
+    {
+        $user = $this->manager->getRepository(User::class)->findUserByEmail($email);
 
+        if(empty($user)) { return "Adresse email invalide"; }
+
+        $tokens = $this->manager->getRepository(TokenPasswordLost::class)->findTokenByUser($user);
+
+        foreach ($tokens as $token) {
+            if($this->tokenDateExpirationPassed($token->getExpirationDate())) { return "Une demande de réinitialisation est déjà en cours!"; }
+        }
+        return false;
     }
 
 }

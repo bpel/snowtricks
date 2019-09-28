@@ -15,6 +15,8 @@
 
                             {{ form_start(form) }}
                             {{ form_widget(form) }}
+                            {{ form_widget(form.illustrations) }}
+                            {{ form_widget(form.videos) }}
                             {{ form_end(form) }}
                         </div>
                     </div>
@@ -48,25 +50,63 @@
 {% endblock %}
 
 {% block _trick_illustrations_widget %}
-    <button type="button" class="btn btn-primary" id="add-illustration">Add illustration</button>
-    {{ form_widget(form) }}
+    <button type="button" class="btn btn-primary btn-form-edit-add-element" id="add-illustration">Ajouter une illustration</button>
+    <div class="table-responsive">
+        <table class="table card-table table-vcenter text-nowrap datatable">
+            <thead>
+            <tr>
+                <th class="w-1">#</th>
+                <th>Illustration</th>
+                <th>Fichier</th>
+                <th>Selectionner nouveau fichier</th>
+                <th>Supprimer</th>
+            </tr>
+            </thead>
+            <tbody>
+            {{ form_widget(form) }}
+            </tbody>
+        </table>
+    </div>
 {% endblock %}
 
 {% block _trick_videos_widget %}
-    <button type="button" class="btn btn-primary" id="add-video">Add videos</button>
-    {{ form_widget(form) }}
+    <button type="button" class="btn btn-primary btn-form-edit-add-element" id="add-video">Ajouter une vidéo</button>
+    <div class="table-responsive">
+        <table class="table card-table table-vcenter text-nowrap datatable">
+            <thead>
+            <tr>
+                <th class="w-1">#</th>
+                <th>Vidéo</th>
+                <th>Url actuel</th>
+                <th>Modifier URL</th>
+                <th>Supprimer</th>
+            </tr>
+            </thead>
+            <tbody>
+            {{ form_widget(form) }}
+            </tbody>
+        </table>
+    </div>
 {% endblock %}
 
 {% block _trick_illustrations_entry_widget %}
-    <div class="form-group">
-        {{ form_widget(form.file) }}
-    </div>
-{% endblock %}
+    <tr>
+        <td><span class="text-muted">{{ form.vars.name }}</span></td>
+        <td><img class="img-edit-trick-table" src="{{ asset("build/img/")}}{{ form.vars.value.filename|default('No_Image_Available.jpg') }}" alt="IMG_TRICK"></td>
+        <td>{{ form.vars.value.filename|default("") }}</td>
+        <td>{{ form_widget(form.file) }}</td>
+        <td><button class="btn btn-outline-danger btn-sm delete-button-trick" value="24"><span class="fas fa-trash"></span></button></td>
+    </tr>
+    {% endblock %}
 
 {% block _trick_videos_entry_widget %}
-    <div class="form-group">
-        {{ form_widget(form.url) }}
-    </div>
+    <tr>
+        <td><span class="text-muted">{{ form.vars.name }}</span></td>
+        <td>embed</td>
+        <td>{{ form.vars.value.url|default("") }}</td>
+        <td>{{ form_widget(form.url) }}</td>
+        <td><button class="btn btn-outline-danger btn-sm delete-button-trick" value="24"><span class="fas fa-trash"></span></button></td>
+    </tr>
 {% endblock %}
 
 {% block _trick_illustrations_entry_row %}

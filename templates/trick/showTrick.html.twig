@@ -54,12 +54,14 @@
                                                 </div>
                                             </div>
                                         {% endif %}
+                                        {% if form is defined %}
                                         <p>Formulaire création message</p>
                                         {{ form_start(form) }}
 
                                         {{ form_widget(form) }}
 
                                         {{ form_end(form) }}
+                                        {% endif %}
                                     </div>
 
                                 {% endblock %}

@@ -31,6 +31,11 @@ class TokenPasswordLost
      */
     private $used = false;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\User")
+     */
+    private $user;
+
     public function getId(): ?int
     {
         return $this->id;
