@@ -10,11 +10,10 @@
         {% block scripts %}{% endblock %}
         {% block header %} {% include 'header.html.twig' %} {% endblock %}
         {% block navbar %} {% include 'navbar.html.twig' %} {% endblock %}
-            <body>
             <div class="my-3 my-md-5">
                 <div class="container">
                     <div class="page-header">
-                        <h1 class="page-title">{% if namePage is not empty %}{{ namePage }}{% endif %}</h1>
+                        <h1 class="page-title">{% if namePage is defined %}{{ namePage }}{% endif %}</h1>
                     </div>
                     {% for message in app.flashes('error') %}
                         <div class="alert alert-icon alert-danger" role="alert"><i class="fas fa-times-circle"></i>{{ message }}</div>
@@ -29,7 +28,6 @@
                     {% endblock %}
                 </div>
             </div>
-            </body>
         {% block footer %} {% include 'footer.html.twig' %} {% endblock %}
     </body>
 </html>
