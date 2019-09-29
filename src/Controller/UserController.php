@@ -44,9 +44,9 @@ class UserController extends AbstractController
      */
     public function register(Request $request, ObjectManager $manager, UserPasswordEncoderInterface $encoder)
     {
-       $user = new User();
+        $user = new User();
 
-       $form = $this->createForm(RegisterType::class, $user);
+        $form = $this->createForm(RegisterType::class, $user);
 
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()) {
@@ -239,7 +239,7 @@ class UserController extends AbstractController
     public function userLogged()
     {
         if(empty($this->getUser())) {
-           return false;
+            return false;
         }
         return true;
     }
