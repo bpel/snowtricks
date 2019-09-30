@@ -100,7 +100,7 @@ class UserController extends AbstractController
                 $user->setPassword($encoder->encodePassword($user,$user->getPassword()));
                 $manager->persist($user);
                 $manager->flush();
-                $mailer->sendMessage($user->getEmail(), "Modification de votre mot de passe", $user->getnameUser()." ".$user->getlastnameUser().", votre mot de passe à été modifié.");
+                $mailer->sendMessage($user->getEmail(), "Modification de votre mot de passe", "passwordChange");
             }
 
             return $this->render('user/editPassword.html.twig', [

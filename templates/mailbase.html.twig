@@ -1,4 +1,5 @@
-{% block mail %}{% endblock %}
-<p>Mail generated {{ dateNow|date() }}</p>
-<hr>
-<small>This is an automatically generated message. Please do not reply to this mail.</small>
+<link rel="stylesheet" type="text/css" href="{{ absolute_url(asset("build/vendors~app.css")) }}">
+<link rel="stylesheet" type="text/css" href="{{ absolute_url(asset("build/mailtemplate.css")) }}">
+
+{% block mailBody %}
+{% endblock %}
