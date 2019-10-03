@@ -18,13 +18,15 @@
         "symfony/orm-pack": "^1.0",
         "symfony/security": "4.3.*",
         "symfony/security-bundle": "4.3.*",
+        "symfony/swiftmailer-bundle": "^3.2",
         "symfony/templating": "4.3.*",
         "symfony/twig-bridge": "4.3.*",
         "symfony/twig-bundle": "4.3.*",
         "symfony/validator": "4.3.*",
         "symfony/var-dumper": "4.3.*",
         "symfony/webpack-encore-bundle": "^1.6",
-        "symfony/yaml": "4.3.*"
+        "symfony/yaml": "4.3.*",
+        "twig/extensions": "^1.5"
     },
     "require-dev": {
         "doctrine/doctrine-fixtures-bundle": "^3.2",

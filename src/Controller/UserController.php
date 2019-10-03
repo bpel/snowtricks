@@ -9,6 +9,7 @@ use App\Form\EditPasswordType;
 use App\Form\PasswordLostType;
 use App\Form\PasswordRecoveryType;
 use App\Form\RegisterType;
+use App\Service\Mailer;
 use App\Service\PasswordLostService;
 use App\Service\PasswordRecoveryService;
 use App\Service\UploadService;
@@ -43,9 +44,9 @@ class UserController extends AbstractController
      */
     public function register(Request $request, ObjectManager $manager, UserPasswordEncoderInterface $encoder)
     {
-       $user = new User();
+        $user = new User();
 
-       $form = $this->createForm(RegisterType::class, $user);
+        $form = $this->createForm(RegisterType::class, $user);
 
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()) {
@@ -84,7 +85,7 @@ class UserController extends AbstractController
     /**
      * @Route("/user/password/edit", name="user_password_edit")
      */
-    public function editPassword(Request $request, ObjectManager $manager, UserPasswordEncoderInterface $encoder)
+    public function editPassword(Request $request, ObjectManager $manager, UserPasswordEncoderInterface $encoder, Mailer $mailer)
     {
         if ($this->userLogged())
         {
@@ -99,6 +100,7 @@ class UserController extends AbstractController
                 $user->setPassword($encoder->encodePassword($user,$user->getPassword()));
                 $manager->persist($user);
                 $manager->flush();
+                $mailer->sendMessage($user->getEmail(), "Modification de votre mot de passe", "passwordChange");
             }
 
             return $this->render('user/editPassword.html.twig', [
@@ -237,7 +239,7 @@ class UserController extends AbstractController
     public function userLogged()
     {
         if(empty($this->getUser())) {
-           return false;
+            return false;
         }
         return true;
     }

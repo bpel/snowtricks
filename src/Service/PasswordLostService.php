@@ -15,13 +15,15 @@ class PasswordLostService {
     private $tokenPasswordLost;
     private $encoder;
     private $dateNow;
+    private $mailer;
 
-    public function __construct(ManagerRegistry $managerRegistry, UserPasswordEncoderInterface $encoder)
+    public function __construct(ManagerRegistry $managerRegistry, UserPasswordEncoderInterface $encoder, Mailer $mailer)
     {
         $this->manager = $managerRegistry->getManager();
         $this->user = new User();
         $this->tokenPasswordLost = new TokenPasswordLost();
         $this->encoder = $encoder;
+        $this->mailer = $mailer;
         try {
             $this->dateNow = new \DateTime('now');
         } catch (\Exception $e) {
@@ -68,12 +70,19 @@ class PasswordLostService {
         }
 
         $tokenPasswordLost = new TokenPasswordLost();
-        $tokenPasswordLost->setToken($this->getToken());
+        $token_generated = $this->getToken();
+        $tokenPasswordLost->setToken($token_generated);
         $tokenPasswordLost->setUser($user);
         $tokenPasswordLost->setExpirationDate($this->getDateExpiration());
 
         $this->manager->persist($tokenPasswordLost);
         $this->manager->flush();
+
+        $datas = [
+            'token' => $token_generated
+        ];
+        $this->mailer->sendMessage($email, "Récupération compte", "passwordRecovery", $datas);
+
     }
 
     public function getErrorTokenLost($email)

@@ -15,6 +15,9 @@ class IllustrationType extends AbstractType
     {
         $builder
             ->add('file', FileType::class, [
+                'attr' => [
+                    'placeholder' => 'Sélectionner le fichier',
+                ],
                 'label' => false,
                 'mapped' => false,
                 'required' => false,
