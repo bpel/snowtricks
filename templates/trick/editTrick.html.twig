@@ -5,20 +5,16 @@
 {% block body %}
 
     <div class="my-3 my-md-5">
-
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="card form-card">
-                        <div class="card-body">
-                            <h3 class="card-title">Informations sur la figure #{{ trick.id }}</h3>
-
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card form-card">
+                    <div class="card-body">
+                        <h3 class="card-title">Informations sur la figure #{{ trick.id }}</h3>
                             {{ form_start(form) }}
                             {{ form_widget(form) }}
                             {{ form_widget(form.illustrations) }}
                             {{ form_widget(form.videos) }}
                             {{ form_end(form) }}
-                        </div>
                     </div>
                 </div>
             </div>
@@ -28,21 +24,54 @@
     {% block script %}
 
         <script>
+
+            const illustrationsNb = $('.form-group .form-group-trick-illustration').length;
+            $("#widgets-counter-illustrations").val(illustrationsNb);
+
             $('#add-illustration').click(function () {
-                const index = $('#trick_illustrations div.form-group').length;
 
-                const tmpl = $('#trick_illustrations').data('prototype').replace(/__name__/g, index);
+                const indexIllustration = +$('#widgets-counter-illustrations').val();
 
-                $('#trick_illustrations').append(tmpl);
-            })
+                const tmpIllustration = $('#trick_illustrations').data('prototype').replace(/__name__/g, indexIllustration);
+
+                $('#trick_illustrations').append(tmpIllustration);
+
+                $('#widgets-counter-illustrations').val(indexIllustration + 1);
+
+                handleDeleteButtons();
+                handleUploadButtons();
+            });
+
+            const videosNb = $('.form-group .form-group-trick-video').length;
+            $("#widgets-counter-videos").val(videosNb);
 
             $('#add-video').click(function () {
-                const index1 = $('#trick_videos div.form-group').length;
-                console.log(index1);
-                const tmpl1 = $('#trick_videos').data('prototype').replace(/__name__/g, index1);
+                const indexVideo = +$('#widgets-counter-videos').val();
 
-                $('#trick_videos').append(tmpl1);
-            })
+                const tmpVideo = $('#trick_videos').data('prototype').replace(/__name__/g, indexVideo);
+
+                $('#trick_videos').append(tmpVideo);
+
+                $('#widgets-counter-videos').val(indexVideo + 1);
+
+                handleDeleteButtons();
+                handleUploadButtons();
+            });
+
+            function handleDeleteButtons(){
+                $('button[data-action="delete"]').click(function () {
+                    const target = this.dataset.target;
+                    $(target).remove();
+                })
+            }
+
+            function handleUploadButtons(){
+                $("input[type=file]").change(function (e){$(this).next('.custom-file-label').text(e.target.files[0].name);})
+            }
+
+            handleDeleteButtons();
+            handleUploadButtons();
+
         </script>
 
     {% endblock %}
@@ -51,62 +80,47 @@
 
 {% block _trick_illustrations_widget %}
     <button type="button" class="btn btn-primary btn-form-edit-add-element" id="add-illustration">Ajouter une illustration</button>
-    <div class="table-responsive">
-        <table class="table card-table table-vcenter text-nowrap datatable">
-            <thead>
-            <tr>
-                <th class="w-1">#</th>
-                <th>Illustration</th>
-                <th>Fichier</th>
-                <th>Selectionner nouveau fichier</th>
-                <th>Supprimer</th>
-            </tr>
-            </thead>
-            <tbody>
-            {{ form_widget(form) }}
-            </tbody>
-        </table>
-    </div>
+    {{ form_widget(form) }}
+    <input type="hidden" id="widgets-counter-illustrations">
 {% endblock %}
 
 {% block _trick_videos_widget %}
     <button type="button" class="btn btn-primary btn-form-edit-add-element" id="add-video">Ajouter une vidéo</button>
-    <div class="table-responsive">
-        <table class="table card-table table-vcenter text-nowrap datatable">
-            <thead>
-            <tr>
-                <th class="w-1">#</th>
-                <th>Vidéo</th>
-                <th>Url actuel</th>
-                <th>Modifier URL</th>
-                <th>Supprimer</th>
-            </tr>
-            </thead>
-            <tbody>
-            {{ form_widget(form) }}
-            </tbody>
-        </table>
-    </div>
+    {{ form_widget(form) }}
+    <input type="hidden" id="widgets-counter-videos" value="0">
 {% endblock %}
 
 {% block _trick_illustrations_entry_widget %}
-    <tr>
-        <td><span class="text-muted">{{ form.vars.name }}</span></td>
-        <td><img class="img-edit-trick-table" src="{{ asset("build/img/")}}{{ form.vars.value.filename|default('No_Image_Available.jpg') }}" alt="IMG_TRICK"></td>
-        <td>{{ form.vars.value.filename|default("") }}</td>
-        <td>{{ form_widget(form.file) }}</td>
-        <td><button class="btn btn-outline-danger btn-sm delete-button-trick" value="24"><span class="fas fa-trash"></span></button></td>
-    </tr>
-    {% endblock %}
+    <div class="form-group form-group-trick-illustration" id="{{ id }}">
+        <div class="form-row">
+            <div class="col-7">
+                {{ form_widget(form.file, { 'attr': {'placeholder': form.vars.value.filename|default("Sélectionner un fichier") } }) }}
+            </div>
+            <div class="col">
+                <button type="button" class="btn btn-primary preview-button-trick" data-action="preview" data-target="#{{ id }}"><i class="far fa-image"></i></button>
+                <button type="button" class="btn btn-danger delete-button-trick" data-action="delete" data-target="#{{ id }}"><i class="fas fa-trash"></i></button>
+            </div>
+        </div>
+    </div>
+{% endblock %}
 
 {% block _trick_videos_entry_widget %}
-    <tr>
-        <td><span class="text-muted">{{ form.vars.name }}</span></td>
-        <td>embed</td>
-        <td>{{ form.vars.value.url|default("") }}</td>
-        <td>{{ form_widget(form.url) }}</td>
-        <td><button class="btn btn-outline-danger btn-sm delete-button-trick" value="24"><span class="fas fa-trash"></span></button></td>
-    </tr>
+
+<div class="form-group form-group-trick-video" id="{{ id }}">
+        <div class="form-row">
+            <div class="col-7 col-sm-5">
+                {{ form_widget(form.url) }}
+            </div>
+            <div class="col">
+                {{ form_widget(form.platformVideo) }}
+            </div>
+            <div class="col col-sm-3">
+                <button type="button" class="btn btn-primary preview-button-trick" data-action="preview" data-target="#{{ id }}"><i class="far fa-video"></i></button>
+                <button type="button" class="btn btn-danger delete-button-trick" data-action="delete" data-target="#{{ id }}"><i class="fas fa-trash"></i></button>
+            </div>
+        </div>
+</div>
+
 {% endblock %}
 
 {% block _trick_illustrations_entry_row %}

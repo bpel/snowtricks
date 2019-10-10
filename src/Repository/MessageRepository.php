@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Message;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ORM\Query;
 
 /**
  * @method Message|null find($id, $lockMode = null, $lockVersion = null)
@@ -19,32 +20,14 @@ class MessageRepository extends ServiceEntityRepository
         parent::__construct($registry, Message::class);
     }
 
-    // /**
-    //  * @return Message[] Returns an array of Message objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    public function findAllMessagesOneTrick($id): Query
     {
         return $this->createQueryBuilder('m')
-            ->andWhere('m.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('m.id', 'ASC')
-            ->setMaxResults(10)
+            ->select('m')
+            ->where('m.trick = :trick_id')
+            ->setParameter('trick_id', $id)
+            ->orderBy('m.id','DESC')
             ->getQuery()
-            ->getResult()
-        ;
+            ;
     }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?Message
-    {
-        return $this->createQueryBuilder('m')
-            ->andWhere('m.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

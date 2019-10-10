@@ -3,9 +3,6 @@
 namespace App\Controller;
 
 use App\Entity\Trick;
-use App\Form\TrickDeleteType;
-use App\Repository\TrickRepository;
-use Doctrine\ORM\EntityManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;

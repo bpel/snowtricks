@@ -2,13 +2,10 @@
 
 namespace App\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
-use Twig\Token;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -26,28 +23,38 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=255, unique=true)
+     * @Assert\NotBlank(message="Ce champ est obligatoire")
      * @Assert\Email
      */
     private $email;
 
     /**
      * @ORM\Column(type="string", length=100)
+     * @Assert\NotBlank(message="Ce champ est obligatoire")
      */
     private $nameUser;
 
     /**
      * @ORM\Column(type="string", length=100)
+     * @Assert\NotBlank(message="Ce champ est obligatoire")
      */
     private $lastnameUser;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Illustration", fetch="EAGER",cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="Illustration", fetch="EAGER",cascade={"remove"})
      * @JoinColumn(name="illustration", referencedColumnName="id", nullable=true)
      */
     private $illustration;
 
     /**
      * @ORM\Column(type="string", length=150)
+     * @Assert\NotNull(message="Le mot de passe doit contenir au minimum 8 caractéres.")
+     * @Assert\Length(
+     *      min = 8,
+     *      max = 50,
+     *      minMessage = "Le mot de passe doit contenir au minimum {{ limit }} caractéres.",
+     *      maxMessage = "Le mot de passe doit contenir au maximum {{ limit }} caractéres."
+     * )
      */
     private $password;
 

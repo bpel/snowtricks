@@ -7,19 +7,15 @@ use App\Entity\User;
 use App\Form\EditIllustrationType;
 use App\Form\EditPasswordType;
 use App\Form\PasswordLostType;
-use App\Form\PasswordRecoveryType;
 use App\Form\RegisterType;
 use App\Service\Mailer;
 use App\Service\PasswordLostService;
 use App\Service\PasswordRecoveryService;
 use App\Service\UploadService;
 use Doctrine\Common\Persistence\ObjectManager;
-use Doctrine\ORM\EntityManager;
-use http\Env\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
@@ -67,13 +63,15 @@ class UserController extends AbstractController
     /**
      * @Route("/user/login", name="user_login")
      */
-    public function login(AuthenticationUtils $authenticationUtils)
+    public function login(AuthenticationUtils $authenticationUtils, $emailAdress = null)
     {
         $error = $authenticationUtils->getLastAuthenticationError();
 
-        if(!empty($error)) { $error = $error->getMessage(); }
-
-        $emailAdress = $authenticationUtils->getLastUsername();
+        if(!empty($error))
+        {
+            $emailAdress = $authenticationUtils->getLastUsername();
+            $error = $error->getMessage();
+        }
 
         return $this->render('user/login.html.twig', [
             'error' => $error,
@@ -87,30 +85,28 @@ class UserController extends AbstractController
      */
     public function editPassword(Request $request, ObjectManager $manager, UserPasswordEncoderInterface $encoder, Mailer $mailer)
     {
-        if ($this->userLogged())
-        {
-            $idUser = $this->getUser()->getId();
-            $em = $this->getDoctrine()->getManager();
-            $user = $em->getRepository(User::class)->findOneBy(['id' => $idUser]);
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
-            $formEditPassword = $this->createForm(EditPasswordType::class, $user);
+        $idUser = $this->getUser()->getId();
+        $em = $this->getDoctrine()->getManager();
+        $user = $em->getRepository(User::class)->findOneBy(['id' => $idUser]);
 
-            $formEditPassword->handleRequest($request);
-            if($formEditPassword->isSubmitted() && $formEditPassword->isValid()) {
-                $user->setPassword($encoder->encodePassword($user,$user->getPassword()));
-                $manager->persist($user);
-                $manager->flush();
-                $mailer->sendMessage($user->getEmail(), "Modification de votre mot de passe", "passwordChange");
-            }
+        $formEditPassword = $this->createForm(EditPasswordType::class);
+        $formEditPassword->handleRequest($request);
+
+        if($formEditPassword->isSubmitted() && $formEditPassword->isValid()) {
+            $user->setPassword($encoder->encodePassword($user, $user->getPassword()));
+            $manager->persist($user);
+            $manager->flush();
+            $mailer->sendMessage($user->getEmail(), "Modification de votre mot de passe", "passwordChange");
+            $this->addFlash('success', 'Le mot de passe à bien été modifié.');
+        }
 
             return $this->render('user/editPassword.html.twig', [
                 'namePage' => 'user_password_edit',
                 'formEditPassword' => $formEditPassword->createView(),
                 'errors' => $formEditPassword->getErrors()
             ]);
-        }
-
-        return $this->redirectToRoute('error_page_protected');
     }
 
     /**
@@ -129,14 +125,23 @@ class UserController extends AbstractController
             $formEditIllustration->handleRequest($request);
             if ($formEditIllustration->isSubmitted() && $formEditIllustration->isValid()) {
                 $file = $formEditIllustration->get('illustration')->getData();
-                $nameFileUploded = $upload->saveFile($file);
 
-                $illustrationUser = new Illustration();
-                $illustrationUser->setFilename($nameFileUploded);
+                if(!empty($file))
+                {
+                    $nameFileUploded = $upload->saveFile($file);
 
-                $user->setIllustration($illustrationUser);
-                $manager->persist($user);
-                $manager->flush();
+                    $illustrationUser = new Illustration();
+                    $illustrationUser->setFilename($nameFileUploded);
+
+                    $user->setIllustration($illustrationUser);
+                    $manager->persist($user);
+                    $manager->flush();
+                    $this->addFlash('success',"L'image de profil à bien été modifié.");
+                }
+                if(empty($file))
+                {
+                    $this->addFlash('error',"Le fichier selectionné n'est pas valide");
+                }
             }
 
             return $this->render('user/editIllustration.html.twig', [

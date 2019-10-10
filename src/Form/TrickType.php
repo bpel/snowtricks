@@ -6,6 +6,7 @@ use App\Entity\Illustration;
 use App\Entity\Trick;
 use App\Entity\TypeTrick;
 use App\Entity\Video;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
@@ -20,26 +21,41 @@ class TrickType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options = [])
     {
         $builder
-            ->add('nametrick')
-            ->add('description', TextareaType::class)
+            ->add('nametrick', TextType::class, [
+                'label' => 'Nom',
+                'required' => false,
+                'attr' => [
+                    'placeholder' => 'Nom'
+                ],
+            ])
+            ->add('description', TextareaType::class, [
+                'required' => false,
+                'attr' => [
+                    'placeholder' => 'Description'
+                ],
+            ])
             ->add('typetrick', EntityType::class, array(
+                'label' => 'Type',
                 'class' => TypeTrick::class,
                 'expanded'     => false,
                 'multiple'     => false,
+                'required' => false,
                 'choice_label' => function(TypeTrick $typeTrick) {
-                    return $typeTrick->getId() . ' ' . $typeTrick->getNameTypetrick(); }
+                    return $typeTrick->getNameTypetrick(); }
             ))
-            ->add('illustrations',
-                CollectionType::class, [
+            ->add('illustrations', CollectionType::class, [
+                'required' => false,
                 'entry_type' => IllustrationType::class,
                 'entry_options' => ['label' => false],
-                    'allow_add' => true
+                'allow_add' => true,
+                'allow_delete' => true
             ])
-            ->add('videos',
-                CollectionType::class, [
-                    'entry_type' => VideoType::class,
-                    'entry_options' => ['label' => false],
-                    'allow_add' => true
+            ->add('videos', CollectionType::class, [
+                'required' => false,
+                'entry_type' => VideoType::class,
+                'entry_options' => ['label' => false],
+                'allow_add' => true,
+                'allow_delete' => true
                 ])
 
             ->add('save', SubmitType::class, [

@@ -19,6 +19,7 @@ class VideoType extends AbstractType
             ->add('url',UrlType::class, [
                 'attr' => [
                     'placeholder' => 'Url de la vidéo',
+                    'class' => 'form-control-file border'
                 ]
             ])
             ->add('platformVideo', EntityType::class, array(
@@ -26,7 +27,7 @@ class VideoType extends AbstractType
                 'expanded'     => false,
                 'multiple'     => false,
                 'choice_label' => function(PlatformVideo $platformVideo) {
-                    return $platformVideo->getId() . ' ' . $platformVideo->getNamePlatform(); }
+                    return $platformVideo->getNamePlatform(); }
             ))
         ;
     }

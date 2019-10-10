@@ -4,16 +4,25 @@
 
 {% block body %}
 
-    <div class="container">
-        <div class="card-header">
-            <h3 class="card-title">Register</h3>
-        </div>
-        <div class="card-body">
+    <div class="row">
+        <div class="col col-8 mx-auto">
+            <form class="card" action="" method="post">
+                <div class="card-body p-6">
+                    <div class="card-title">Inscription</div>
+                    {% if error is defined and error is not empty %}
+                        <div class="alert alert-icon alert-danger" role="alert"><i class="fas fa-times-circle"></i>{{ error }}</div>
+                    {% endif %}
+                    {{ form_start(form) }}
+                    {{ form_widget(form) }}
+                    <button type="submit" class="btn btn-primary">Inscription</button>
+                    {{ form_end(form) }}
 
-            {{ form_start(form) }}
-            {{ form_widget(form) }}
-            <button type="submit" class="btn btn-primary">Inscription</button>
-            {{ form_end(form) }}
+                    <input type="hidden" name="_target_path" value="/user/login"/>
+                </div>
+            </form>
+            <div class="text-center text-muted">
+                <p>Déjà un compte ? <a href="{{ path('user_login') }}">Connexion</a></p>
+            </div>
         </div>
     </div>
 

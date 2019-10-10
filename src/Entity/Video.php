@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\JoinColumn;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\VideoRepository")
@@ -18,13 +19,15 @@ class Video
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="string", length=255, nullable=false)
+     * @Assert\NotBlank()
      */
     private $url;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\PlatformVideo", fetch="EAGER")
      * @JoinColumn(name="platformVideo", referencedColumnName="id")
+     * @Assert\NotBlank()
      */
     private $platformVideo;
 

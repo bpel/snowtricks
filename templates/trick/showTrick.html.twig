@@ -1,68 +1,100 @@
 {% extends 'base.html.twig' %}
-        {% block body %}
-<div class="my-3 my-md-5">
-    <div class="container">
-        <div class="page-header">
-            <h1 class="page-title">
-                Figure
-            </h1>
+
+{% block body %}
+    {% if trick is not empty %}
+
+<div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+    <div class="carousel-inner">
+        {% for illustration in trick.illustrations %}
+            <div class="carousel-item {% if loop.first %}active{% endif %}">
+                <img class="d-block w-100" src="{{ asset("build/img/")}}{{ illustration.filename }}" alt="{{ illustration.id }}">
+                <div class="carousel-caption d-none d-md-block">
+                    <h5>{{ trick.nametrick|upper }}</h5>
+                </div>
+            </div>
+        {% endfor %}
+        {% for video in trick.videos %}
+            <div class="carousel-item {% if trick.illustrations is empty and loop.first %}active{% endif %}">
+                <iframe src="{{ video.url }}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                <div class="carousel-caption d-none d-md-block">
+                    <h5>{{ trick.nametrick|upper }}</h5>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    {% if trick.illustrations|length > 1 %}
+    <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="sr-only">Previous</span>
+    </a>
+    <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="sr-only">Next</span>
+    </a>
+    {% endif %}
+</div>
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">{{ trick.nametrick|capitalize }} <span class="tag tag-blue">{{ trick.typetrick.nametypetrick|upper }}</span></h3>
         </div>
-                            <div class="container">
-                                <div class="card">
-                                    <div class="card-header">
-                                        <h3 class="card-title">Figure</h3>
-                                        <div class="card-options">
-                                            <a href="#" class="card-options-collapse" data-toggle="card-collapse"><i class="fe fe-chevron-up"></i></a>
-                                            <a href="#" class="card-options-remove" data-toggle="card-remove"><i class="fe fe-x"></i></a>
-                                        </div>
-                                    </div>
-                                    <div class="card-body">
-                                        {{ trick.id }}
-                                    </div>
-                                </div>
+        <div class="card-body">
+            {{ trick.description }}
+        </div>
+    </div>
 
-                                {% block messages_users %}
-                                    <div class="card">
-                                        <div class="card-header">
-                                            <h3 class="card-title">Messages</h3>
-                                        </div>
-                                        {% if trick.messages is defined %}
-                                            {% for message in trick.messages %}
-                                                <li class="list-group-item py-5">
-                                                    <div class="media">
-                                                        {% if message.user.illustration.filename is defined %}
-                                                        <div class="media-object avatar avatar-md mr-4" style="background-image: url({{ asset("build/img/")}}{{ message.user.illustration.filename }})"></div>
-                                                        {% else %}
-                                                            <div class="media-object avatar avatar-md mr-4" style="background-image: url({{ asset("build/img/No_Image_Available.jpg")}})"></div>
-                                                        {% endif %}
-                                                        <div class="media-body">
-                                                            <div class="media-heading">
-                                                                <small class="float-right text-muted">{{ message.dateCreate|date('d/m/Y h:i') }}</small>
-                                                                <h5>{{ message.user.nameUser }} {{ message.user.lastnameUser }}</h5>
-                                                            </div>
-                                                            <div>
-                                                                {{ message.message }}
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                            {% endfor %}
-                                        {% else %}
-                                            <div class="container">
-                                                <div class="alert alert-icon alert-info" role="alert">
-                                                    <i class="fe fe-alert-triangle mr-2" aria-hidden="true"></i> Pas encore de message
-                                                </div>
-                                            </div>
-                                        {% endif %}
-                                        {% if form is defined %}
-                                        <p>Formulaire création message</p>
-                                        {{ form_start(form) }}
+<div class="card">
+    <div class="card-header">
+        <h3 class="card-title">Messages</h3>
+    </div>
 
-                                        {{ form_widget(form) }}
+    {% if messages is defined and messages is not empty %}
+        {% for message in messages %}
+            <li class="list-group-item py-5">
+                <div class="media">
+                    {% if message.user.illustration.filename is defined %}
+                        <div class="media-object avatar avatar-md mr-4" style="background-image: url({{ asset("build/img/")}}{{ message.user.illustration.filename }})"></div>
+                    {% else %}
+                        <div class="media-object avatar avatar-md mr-4" style="background-image: url({{ asset("build/img/No_Image_Available.jpg")}})"></div>
+                    {% endif %}
+                    <div class="media-body">
+                        <div class="media-heading">
+                            <small class="float-right text-muted">{{ message.dateCreate|date('d/m/Y H:i') }}</small>
+                            <h5>{{ message.user.nameUser }} {{ message.user.lastnameUser }}</h5>
+                        </div>
+                        <div>
+                            {{ message.message }}
+                        </div>
+                    </div>
+                </div>
+            </li>
+        {% endfor %}
+        <div class="row">
+            <div class="col-centered">
+                <div class="navigation pagination-buttons-messages">{{ knp_pagination_render(messages) }}</div>
+            </div>
+        </div>
+    {% else %}
+        <div class="container">
+            <div class="col-12">
+                <div class="alert alert-icon alert-info" role="alert"><i class="fas fa-info-circle"></i>Pas de message à afficher</div>
+            </div>
+        </div>
+    {% endif %}
 
-                                        {{ form_end(form) }}
-                                        {% endif %}
-                                    </div>
+</div>
 
-                                {% endblock %}
+    {% if form is defined %}
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Ajouter un message</h3>
+            </div>
+            <div class="card-body">
+                {{ form_start(form) }}
+                {{ form_widget(form) }}
+                {{ form_end(form) }}
+            </div>
+        </div>
+    {% endif %}
+
+    {% endif %}
 {% endblock %}

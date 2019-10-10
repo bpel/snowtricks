@@ -13,9 +13,16 @@ class PasswordLostType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('email', EmailType::class)
+            ->add('email', EmailType::class, [
+                'label' => 'Adresse email',
+                'required' => false,
+                'label_attr' => array('class' => 'form-label'),
+                'attr' => [
+                    'placeholder' => 'Adresse email'
+                ],
+            ])
             ->add('save', SubmitType::class, [
-                'label' => 'Demande reset password'
+                'label' => 'Réinitialiser'
             ])
             ->getForm()
         ;

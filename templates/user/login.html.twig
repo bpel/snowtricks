@@ -4,32 +4,35 @@
 
 {% block body %}
 
-    <div class="container">
-        <div class="card-header">
-            <h3 class="card-title">login</h3>
-        </div>
-        <div class="card-body">
+    <div class="row">
+        <div class="col col-8 mx-auto">
+            <form class="card" action="" method="post">
+                <div class="card-body p-6">
+                    <div class="card-title">Connexion</div>
+                    {% if error is not empty %}
+                        <div class="alert alert-icon alert-danger" role="alert"><i class="fas fa-times-circle"></i>{{ error }}</div>
+                    {% endif %}
+                    <form action="{{ path('user_login') }}" method="POST">
+                        <div class="form-group">
+                            <label class="form-label" for="email">Adresse email</label>
+                            <input type="email" name="_username" id="email" class="{% if error is empty %}form-control{% else %}form-control is-invalid{% endif %}" placeholder="Adresse email" value="{% if emailAdress is not empty %}{{ emailAdress }}{% endif %}">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="password">Mot de passe</label>
+                            <input type="password" name="_password" id="password" class="{% if error is empty %}form-control{% else %}form-control is-invalid{% endif %}" placeholder="Mot de passe">
+                        </div>
 
-            {% if error %}
-            erreur : {{ error }}
-            {% endif %}
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary">Connexion</button>
+                        </div>
+                    </form>
 
-            <form action="{{ path('user_login') }}" method="POST">
-                <div class="form-group">
-                    <label for="email">Email</label>
-                    <input type="text" name="_username" id="email" class="form-control" placeholder="Adresse email...">
-                </div>
-                <div class="form-group">
-                    <label for="email">Mot de passe</label>
-                    <input type="text" name="_password" id="password" class="form-control" placeholder="Mot de passe ...">
-                </div>
-                <div class="form-group">
-                    <button type="submit" class="btn btn-primary">Connexion</button>
+                    <input type="hidden" name="_target_path" value="/"/>
                 </div>
             </form>
-
-            <p>Mot de passe perdu ? <a href="{{ path('user_password_lost') }}">Demande réinitialisation</a></p>
-
+            <div class="text-center text-muted">
+                <p>Mot de passe perdu ? <a href="{{ path('user_password_lost') }}">Récuperer mon mot de passe</a> / Pas encore de compte ? <a href="{{ path('user_register') }}">Inscription</a></p>
+            </div>
         </div>
     </div>
 
