@@ -56,8 +56,7 @@ class Trick
     private $videos;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Message", fetch="EAGER",cascade={"persist"})
-     * @JoinColumn(name="message", referencedColumnName="id", onDelete="CASCADE")
+     * @ORM\OneToMany(targetEntity="App\Entity\Message", mappedBy="trick",cascade={"remove"})
      */
     private $messages;
 

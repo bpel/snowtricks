@@ -19,13 +19,13 @@ class Message
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Trick", inversedBy="id", cascade={"remove"})
+     * @ORM\ManyToOne(targetEntity="App\Entity\Trick", inversedBy="messages")
      * @JoinColumn(name="trick", referencedColumnName="id")
      */
     private $trick;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="id", cascade={"remove"})
+     * @ORM\ManyToOne(targetEntity="App\Entity\User")
      * @JoinColumn(name="user", referencedColumnName="id")
      */
     private $user;
