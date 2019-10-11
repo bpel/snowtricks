@@ -32,8 +32,8 @@
                     </div>
                     <div class="card-body">
                         {% if user.illustration is defined and user.illustration is not empty %}
+                            <img id="illustration-edit-user" src="{{ asset("build/img/")}}{{ user.illustration.filename }}" alt="img-profile-user">
                             Illustration actuelle : {{ user.illustration.filename }}
-                            <img src="{{ asset("build/img/")}}{{ user.illustration.filename }}" alt="img-profile-user">
                         {% else %}
                             Pas d'image de profil
                         {% endif %}
@@ -46,5 +46,9 @@
             </div>
         </div>
     </div>
+
+    <script>
+        $("input[type=file]").change(function (e){$(this).next('.custom-file-label').text(e.target.files[0].name);})
+    </script>
 
 {% endblock %}

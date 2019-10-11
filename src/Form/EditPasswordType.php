@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -18,11 +19,20 @@ class EditPasswordType extends AbstractType
             ->add('password', RepeatedType::class, [
                 'data' => null,
                 'type' => PasswordType::class,
-                'invalid_message' => 'The password fields must match.',
+                'invalid_message' => 'Les mots de passes ne sont pas identiques.',
                 'options' => ['attr' => ['class' => 'password-field']],
-                'required' => true,
-                'first_options'  => ['label' => 'Password'],
-                'second_options' => ['label' => 'Repeat Password'],
+                'required' => false,
+                'first_options'  => ['label' => 'Mot de passe', 'attr' => array('placeholder' => 'Mot de passe') ],
+                'second_options' => ['label' => 'Confirmation', 'attr' => array('placeholder' => 'Mot de passe')],
+            ])
+            ->add('email', HiddenType::class, [
+                'data' => 'email@email.fr'
+            ])
+            ->add('nameuser', HiddenType::class, [
+                'data' => 'nameuser'
+            ])
+            ->add('lastnameuser', HiddenType::class, [
+                'data' => 'lastnameuser'
             ])
             ->add('Modifier', SubmitType::class, [
                 'label' => 'Modifier'

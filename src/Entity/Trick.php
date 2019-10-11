@@ -24,35 +24,39 @@ class Trick
 
     /**
      * @ORM\Column(type="string", length=100, unique=true)
+     * @Assert\NotBlank
      */
     private $nameTrick;
 
     /**
      * @ORM\ManyToOne(targetEntity="TypeTrick", fetch="LAZY",cascade={"persist"})
      * @JoinColumn(name="typeTrick", referencedColumnName="id")
+     * @Assert\NotNull
      */
     private $typeTrick;
 
     /**
      * @ORM\Column(type="string", length=100)
+     * @Assert\NotNull
      */
     private $description;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Illustration", fetch="LAZY",cascade={"persist"})
-     * @JoinColumn(name="illustrations", referencedColumnName="id")
+     * @ORM\ManyToMany(targetEntity="Illustration", fetch="LAZY",cascade={"remove"})
+     * @JoinColumn(name="illustrations", referencedColumnName="id", onDelete="CASCADE")
+     * @Assert\Valid
      */
     private $illustrations;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Video", fetch="LAZY",cascade={"persist"})
-     * @JoinColumn(name="videos", referencedColumnName="id")
+     * @ORM\ManyToMany(targetEntity="Video", fetch="LAZY",cascade={"remove"})
+     * @JoinColumn(name="videos", referencedColumnName="id", onDelete="CASCADE")
+     * @Assert\Valid
      */
     private $videos;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Message", fetch="EAGER",cascade={"persist"})
-     * @JoinColumn(name="message", referencedColumnName="id")
+     * @ORM\OneToMany(targetEntity="App\Entity\Message", mappedBy="trick",cascade={"remove"})
      */
     private $messages;
 

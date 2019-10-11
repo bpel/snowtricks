@@ -4,35 +4,38 @@
 
 {% block body %}
 
-    <div class="container">
+    <div class="card">
         <div class="card-header">
             <h3 class="card-title">Utilisateurs</h3>
         </div>
+
         <div class="card-body">
-            <div class="table-responsive">
-                <table class="table card-table table-striped table-vcenter">
-                    <thead>
-                    <tr>
-                        <th colspan="2">User</th>
-                        <th>Email</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {% for user in users %}
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>Illustration</th>
+                    <th>Nom et prenom</th>
+                    <th>Adresse email</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for user in users %}
                     <tr>
                         <td class="w-1">
                             {% if user.illustration is not null %}
-                            <span class="avatar" style="background-image: url({{ asset("build/img/fixtures/")}}{{ user.illustration.filename }})"></span>
+                                <span class="avatar" style="background-image: url({{ asset("build/img/")}}{{ user.illustration.filename }})"></span>
+                            {% else %}
+                                <span class="avatar" style="background-image: url({{ asset("build/img/")}}'No_Image_Available.jpg')"></span>
                             {% endif %}
-                            </td>
+                        </td>
                         <td>{{ user.lastnameUser }} {{ user.nameUser }}</td>
                         <td>{{ user.email }}</td>
                     </tr>
-                    {% endfor %}
-                    </tbody>
-                </table>
-            </div>
+                {% endfor %}
+                </tbody>
+            </table>
         </div>
+
     </div>
 
 {% endblock %}

@@ -16,21 +16,19 @@ class IllustrationType extends AbstractType
         $builder
             ->add('file', FileType::class, [
                 'attr' => [
-                    'placeholder' => 'Sélectionner le fichier',
+                    'class' => null
                 ],
                 'label' => false,
                 'mapped' => false,
-                'required' => false,
                 'constraints' => [
                     new File([
-                        'maxSize' => '1024k',
                         'mimeTypes' => [
                             'image/jpg',
                             'image/jpeg',
                             'image/png',
                             'image/gif',
                         ],
-                        'mimeTypesMessage' => 'Please fixtures a valid image',
+                        'mimeTypesMessage' => "L'illustration n'est pas valide.",
                     ])
                 ],
             ])

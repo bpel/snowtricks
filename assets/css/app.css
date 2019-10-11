@@ -25,14 +25,6 @@ pre {
     width: 100%;
 }
 
-#trick_illustrations {
-    display: flex;
-}
-
-#trick_videos {
-    display: flex;
-}
-
 .header-toggler {
     color: #b5b5b5;
 }
@@ -48,4 +40,59 @@ pre {
 .img-edit-trick-table {
     height: 100px;
     width: 100px;
+}
+
+.footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+}
+
+.header-brand:hover {
+    color: #e2e2e2;
+}
+
+.custom-file-input {
+    width: auto;
+}
+
+.custom-file-label::after {
+    content: "Parcourir";
+}
+
+#illustration-edit-user {
+    height: 100px;
+    display: block;
+    margin-bottom: 10px;
+}
+
+.carousel-item {
+    width: 100%;
+    height: 600px;
+    background-position: center center;
+    background-repeat: no-repeat;
+}
+
+.carousel-item iframe {
+    height: 100%;
+    width: 100%;
+}
+
+.trick-illustration-form-entry {
+    height: 100%;
+    width: auto;
+}
+
+.form-group-trick-illustration {
+    display: block;
+}
+
+.pagination-buttons-messages {
+    margin-top: 20px;
+}
+
+.col-centered{
+    float: none;
+    margin: 0 auto;
 }

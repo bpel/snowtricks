@@ -13,16 +13,18 @@ class MessageFixtures extends Fixture implements DependentFixtureInterface
     {
         $faker = Faker\Factory::create('fr_FR');
 
-        for ($i = 1; $i<=60;$i++)
+        for ($i = 1; $i<=15;$i++)
         {
-            $message = new Message();
-            $message->setMessage("message".$i);
-            $message->setDateCreate($faker->dateTimeThisYear('now', null));
-            $message->setUser($this->getReference('user' . mt_rand('1', '15')));
-            $manager->persist($message);
-            $this->addReference('message'.$i, $message);
+            for ($j = 1; $j<=3; $j++)
+            {
+                $message = new Message();
+                $message->setMessage("message".$j." Figure n°".$i);
+                $message->setDateCreate($faker->dateTimeThisYear('now', null));
+                $message->setUser($this->getReference('user' . mt_rand('1', '15')));
+                $message->setTrick($this->getReference('trick' . $i));
+                $manager->persist($message);
+            }
         }
-
         $manager->flush();
 
     }
@@ -30,6 +32,7 @@ class MessageFixtures extends Fixture implements DependentFixtureInterface
     public function getDependencies()
     {
         return array(
+            TrickFixtures::class,
             UserFixtures::class,
         );
     }

@@ -27,10 +27,12 @@ class TrickFixtures extends Fixture implements DependentFixtureInterface
                 $trick->addIllustration($this->getReference('illustration'.mt_rand('1','40')));
             }
 
-            for ($l = 0; $l<mt_rand('0','3');$l++)
+            /*
+            for ($l = 0; $l<mt_rand('30','80');$l++)
             {
                 $trick->addMessage($this->getReference('message'.mt_rand('1','40')));
             }
+            */
 
             $manager->persist($trick);
             $this->addReference('trick'.$i, $trick);
@@ -46,7 +48,6 @@ class TrickFixtures extends Fixture implements DependentFixtureInterface
             IllustrationFixtures::class,
             UserFixtures::class,
             VideoFixtures::class,
-            MessageFixtures::class,
         );
     }
 

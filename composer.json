@@ -7,6 +7,7 @@
         "ext-iconv": "*",
         "ext-intl": "*",
         "fzaninotto/faker": "^1.8",
+        "knplabs/knp-paginator-bundle": "^4.0",
         "sensio/framework-extra-bundle": "^5.4",
         "symfony/asset": "4.3.*",
         "symfony/console": "4.3.*",

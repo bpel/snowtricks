@@ -14,7 +14,11 @@ class EditIllustrationType extends AbstractType
     {
         $builder
             ->add('illustration', FileType::class, [
-                'required' => true
+                'required' => false,
+                'attr' => [
+                    'placeholder' => 'Sélectionner un fichier'
+                ],
+
             ])
             ->add('save', SubmitType::class, [
                 'label' => 'Modifier'

@@ -4,20 +4,14 @@ namespace App\Controller;
 
 use App\Entity\Message;
 use App\Entity\Trick;
-use App\Entity\Illustration;
-use App\Entity\User;
 use App\Form\MessageType;
 use App\Form\TrickType;
 use App\Service\UploadService;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ObjectManager;
-use Doctrine\ORM\EntityManager;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Form\FormInterface;
 
 class TrickController extends AbstractController
 {
@@ -27,8 +21,6 @@ class TrickController extends AbstractController
     public function create(Request $request, ObjectManager $manager, UploadService $upload)
     {
         $userLogged = $this->getUser();
-
-        if(empty($userLogged)) { return $this->redirectToRoute('error_page_protected'); }
 
         $trick = new Trick();
 
@@ -52,6 +44,7 @@ class TrickController extends AbstractController
             }
             $manager->persist($trick);
             $manager->flush();
+            $this->addFlash('success','La figure '.$trick->getNameTrick().' à été créé.');
         }
 
         return $this->render('trick/addTrick.html.twig', [
@@ -65,49 +58,46 @@ class TrickController extends AbstractController
     /**
      * @Route("/trick/show/{id}", name="trick_show")
      */
-    public function show($id, Request $request, ObjectManager $manager)
+    public function show($id, Request $request, ObjectManager $manager, PaginatorInterface $paginator)
     {
         $em = $this->getDoctrine()->getManager();
 
         $trick = $em->getRepository(Trick::class)->findAllOneTrick($id);
 
-        $userLogged = $this->getUser();
-
-        if(empty($userLogged))
+        if(!empty($this->getUser()))
         {
-            if (empty($trick->getMessages()))
-            {
-                $this->addFlash('info','Aucun message, Connectez-vous pour écrire un message.');
+            $message = new Message();
+            $form = $this->createForm(MessageType::class, $message);
+
+            $form->handleRequest($request);
+
+            if($form->isSubmitted() && $form->isValid()) {
+                $message->setUser($this->getUser());
+                $message->setTrick($trick);
+                $manager->persist($message);
+                $manager->flush();
+                $this->addFlash('success','Votre message à bien été ajouté!');
             }
-            $this->addFlash('info','Connectez-vous pour pouvoir écrire un message.');
+
+            $messages = $paginator->paginate($em->getRepository(Message::class)->findAllMessagesOneTrick($id),
+                $request->query->getInt('page', 1), 5);
+
+            if(empty($trick)) { $this->addFlash('error',"Cette figure n'existe pas"); }
+
             return $this->render('trick/showTrick.html.twig', [
                 'trick' => $trick,
-                'namePage' => 'trick_show',
+                'messages' => $messages,
+                'form' => $form->createView()
             ]);
-        }
-
-
-        $message = new Message();
-        $form = $this->createForm(MessageType::class, $message);
-
-        $form->handleRequest($request);
-
-        if($form->isSubmitted() && $form->isValid()) {
-            $message->setUser($userLogged);
-            $message->setDateCreate(null);
-            $manager->persist($message);
-
-            $trick->addMessage($message);
-            $manager->persist($trick);
-            $manager->flush();
 
         }
+
+        $messages = $paginator->paginate($em->getRepository(Message::class)->findAllMessagesOneTrick($id),
+            $request->query->getInt('page', 1), 5);
 
         return $this->render('trick/showTrick.html.twig', [
             'trick' => $trick,
-            'form' => $form->createView(),
-            'namePage' => 'trick_show',
-            'userLogged' => $userLogged
+            'messages' => $messages
         ]);
     }
 
@@ -117,8 +107,6 @@ class TrickController extends AbstractController
     public function edit($id, Request $request, ObjectManager $manager, UploadService $upload)
     {
         $userLogged = $this->getUser();
-
-        if(empty($userLogged)) { return $this->redirectToRoute('error_page_protected'); }
 
         $em = $this->getDoctrine()->getManager();
 
@@ -130,19 +118,17 @@ class TrickController extends AbstractController
 
         if($form->isSubmitted() && $form->isValid()) {
             $files = $request->files->get('trick','illustration');
-
-            foreach($form->getData()->getVideos() as $video) {
-                $manager->persist($video);
-            }
-
             foreach($form->getData()->getIllustrations() as $index => $illustration) {
                 $file = $files['illustrations'][$index]['file'];
-                if(!empty($file))
-                {
+                if (!empty($file)) {
                     $newNameFile = $upload->saveFile($file);
                     $illustration->setFilename($newNameFile);
                     $manager->persist($illustration);
                 }
+            }
+            foreach($trick->getVideos() as $video)
+            {
+                $manager->persist($video);
             }
 
             $manager->persist($trick);
@@ -163,9 +149,6 @@ class TrickController extends AbstractController
      */
     public function delete($id, Request $request, ObjectManager $manager)
     {
-        $userLogged = $this->getUser();
-        if(empty($userLogged)) { return $this->redirectToRoute('error_page_protected'); }
-
         $em = $this->getDoctrine()->getManager();
         $trick = $em->getRepository(Trick::class)->findOneBy(['id'=>$id]);
 
