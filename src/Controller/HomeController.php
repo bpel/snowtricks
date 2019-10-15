@@ -25,7 +25,7 @@ class HomeController extends AbstractController
 
         return $this->render('index.html.twig', [
             'tricks' => $tricks,
-            'namePage' => 'home',
+            'namePage' => 'Accueil',
             'userLogged' => $userLogged
         ]);
     }

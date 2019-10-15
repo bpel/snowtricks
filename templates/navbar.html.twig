@@ -4,7 +4,7 @@
             <div class="col-lg order-lg-first">
                 <ul class="nav nav-tabs border-0 flex-column flex-lg-row">
                     <li class="nav-item">
-                        {% if namePage is defined and namePage == "home" %}
+                        {% if namePage is defined and namePage == "Accueil" %}
                             <a href="{{ path('home') }}" class="nav-link active"><i class="fad fa-home"></i>  Accueil</a>
                         {% else %}
                             <a href="{{ path('home') }}" class="nav-link"><i class="fad fa-home"></i>  Accueil</a>
@@ -12,7 +12,7 @@
                     </li>
                     {% if is_granted('IS_AUTHENTICATED_FULLY') %}
                         <li class="nav-item">
-                            {% if namePage is defined and namePage == "trick_create" %}
+                            {% if namePage is defined and namePage == "Créer une figure" %}
                                 <a href="{{ path('trick_create') }}" class="nav-link active"><i class="fad fa-edit"></i>  Créer une figure</a>
                             {% else %}
                                 <a href="{{ path('trick_create') }}" class="nav-link"><i class="fad fa-edit"></i>  Créer une figure</a>
@@ -20,7 +20,7 @@
                         </li>
                     {% endif %}
                     <li class="nav-item dropdown">
-                        {% if namePage is defined and namePage == "user_list" %}
+                        {% if namePage is defined and namePage == "Liste des utilisateurs" %}
                             <a href="{{ path('user_list') }}" class="nav-link active"><i class="fad fa-user"></i>  Utilisateurs</a>
                         {% else %}
                             <a href="{{ path('user_list') }}" class="nav-link"><i class="fad fa-user"></i>  Utilisateurs</a>
@@ -32,7 +32,10 @@
                 <ul class="nav nav-tabs border-0 flex-column flex-lg-row">
                     {% if is_granted('IS_AUTHENTICATED_FULLY') %}
                         <li class="nav-item dropdown">
-                            <a href="javascript:void(0)" class="nav-link" data-toggle="dropdown">
+                            <a href="javascript:void(0)" class="nav-link{%
+                                if namePage is defined and namePage == "Profil"
+                                or namePage == "Modifier mot de passe"
+                                or namePage == "Modifier illustration"%} active{% endif %}" data-toggle="dropdown">
                                 <i class="fad fa-user"></i> {{ app.user.nameuser|capitalize }} {{ app.user.lastnameuser|upper }}
                             </a>
                             <div class="dropdown-menu dropdown-menu-arrow">

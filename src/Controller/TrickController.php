@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Message;
 use App\Entity\Trick;
+use App\Form\AddTrickType;
 use App\Form\MessageType;
 use App\Form\TrickType;
 use App\Service\UploadService;
@@ -21,21 +22,14 @@ class TrickController extends AbstractController
     public function create(Request $request, ObjectManager $manager, UploadService $upload)
     {
         $userLogged = $this->getUser();
-
         $trick = new Trick();
-
         $form = $this->createForm(TrickType::class, $trick);
-
         $form->handleRequest($request);
-
         if($form->isSubmitted() && $form->isValid()) {
-
             $files = $request->files->get('trick','illustration');
-
             foreach($trick->getVideos() as $video) {
                 $manager->persist($video);
             }
-
             foreach($trick->getIllustrations() as $index => $illustration) {
                 $file = $files['illustrations'][$index]['file'];
                 $newNameFile = $upload->saveFile($file);
@@ -46,10 +40,9 @@ class TrickController extends AbstractController
             $manager->flush();
             $this->addFlash('success','La figure '.$trick->getNameTrick().' à été créé.');
         }
-
         return $this->render('trick/addTrick.html.twig', [
             'form' => $form->createView(),
-            'namePage' => 'trick_create',
+            'namePage' => 'Créer une figure',
             'userLogged' => $userLogged
         ]);
     }
@@ -85,6 +78,7 @@ class TrickController extends AbstractController
             if(empty($trick)) { $this->addFlash('error',"Cette figure n'existe pas"); }
 
             return $this->render('trick/showTrick.html.twig', [
+                'namePage' => "Affichage figure",
                 'trick' => $trick,
                 'messages' => $messages,
                 'form' => $form->createView()
@@ -139,7 +133,7 @@ class TrickController extends AbstractController
         return $this->render('trick/editTrick.html.twig', [
             'trick' => $trick,
             'form' => $form->createView(),
-            'namePage' => 'trick_edit',
+            'namePage' => 'Modifier figure',
             'userLogged' => $userLogged
         ]);
     }
