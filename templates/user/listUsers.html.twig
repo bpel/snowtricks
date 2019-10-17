@@ -4,6 +4,7 @@
 
 {% block body %}
 
+    {% if users is not empty %}
     <div class="card">
         <div class="card-header">
             <h3 class="card-title">Utilisateurs</h3>
@@ -35,7 +36,7 @@
                 </tbody>
             </table>
         </div>
-
     </div>
+    {% endif %}
 
 {% endblock %}

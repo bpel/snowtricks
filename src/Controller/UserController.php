@@ -30,6 +30,11 @@ class UserController extends AbstractController
 
         $users = $em->getRepository(User::class)->findAll();
 
+        if (empty($users))
+        {
+            $this->addFlash('info','Aucun utilisateur à afficher.');
+        }
+
         return $this->render('user/listUsers.html.twig', [
             'users' => $users,
             'namePage' => 'Liste des utilisateurs'
