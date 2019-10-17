@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use App\Entity\Message;
 use App\Entity\Trick;
-use App\Form\AddTrickType;
 use App\Form\MessageType;
 use App\Form\TrickType;
 use App\Service\UploadService;
@@ -78,7 +77,7 @@ class TrickController extends AbstractController
             if(empty($trick)) { $this->addFlash('error',"Cette figure n'existe pas"); }
 
             return $this->render('trick/showTrick.html.twig', [
-                'namePage' => "Affichage figure",
+                'namePage' => "Figure #".$trick->getId(),
                 'trick' => $trick,
                 'messages' => $messages,
                 'form' => $form->createView()
@@ -105,6 +104,11 @@ class TrickController extends AbstractController
         $em = $this->getDoctrine()->getManager();
 
         $trick = $em->getRepository(Trick::class)->findAllOneTrick($id);
+
+        if(empty($trick))
+        {
+            return $this->render('error/trickInvalid.html.twig');
+        }
 
         $form = $this->createForm(TrickType::class, $trick);
 
@@ -133,7 +137,7 @@ class TrickController extends AbstractController
         return $this->render('trick/editTrick.html.twig', [
             'trick' => $trick,
             'form' => $form->createView(),
-            'namePage' => 'Modifier figure',
+            'namePage' => 'Modifier figure #'.$trick->getId(),
             'userLogged' => $userLogged
         ]);
     }
