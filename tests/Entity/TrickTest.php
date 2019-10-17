@@ -77,9 +77,9 @@ class TestAbstract extends WebTestCase
         // check exist BDD
         $trickBDD = $this->em->getRepository(Trick::class)->findOneBy(['nametrick' => $trick->getNametrick()]);
 
-        $illustrationsTrickBDD = $trickBDD->getIllustrations();
+        $illustrationsBDD = $trickBDD->getIllustrations();
 
-        $this->assertEquals('ski.png',$illustrationsTrickBDD[0]->getFilename());
+        $this->assertEquals('ski.png',$illustrationsBDD[0]->getFilename());
 
         // deletion
         $this->em->remove($trick);
