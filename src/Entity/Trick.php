@@ -58,6 +58,13 @@ class Trick
      */
     private $messages;
 
+    public function __construct()
+    {
+        $this->illustrations = new ArrayCollection();
+        $this->videos = new ArrayCollection();
+        $this->messages = new ArrayCollection();
+    }
+
     /**
      * @return mixed
      */
@@ -168,6 +175,65 @@ class Trick
     public function setMessages($messages): void
     {
         $this->messages = $messages;
+    }
+
+    public function addIllustration(Illustration $illustration): self
+    {
+        if (!$this->illustrations->contains($illustration)) {
+            $this->illustrations[] = $illustration;
+        }
+
+        return $this;
+    }
+
+    public function removeIllustration(Illustration $illustration): self
+    {
+        if ($this->illustrations->contains($illustration)) {
+            $this->illustrations->removeElement($illustration);
+        }
+
+        return $this;
+    }
+
+    public function addVideo(Video $video): self
+    {
+        if (!$this->videos->contains($video)) {
+            $this->videos[] = $video;
+        }
+
+        return $this;
+    }
+
+    public function removeVideo(Video $video): self
+    {
+        if ($this->videos->contains($video)) {
+            $this->videos->removeElement($video);
+        }
+
+        return $this;
+    }
+
+    public function addMessage(Message $message): self
+    {
+        if (!$this->messages->contains($message)) {
+            $this->messages[] = $message;
+            $message->setTrick($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMessage(Message $message): self
+    {
+        if ($this->messages->contains($message)) {
+            $this->messages->removeElement($message);
+            // set the owning side to null (unless already changed)
+            if ($message->getTrick() === $this) {
+                $message->setTrick(null);
+            }
+        }
+
+        return $this;
     }
 
 }
