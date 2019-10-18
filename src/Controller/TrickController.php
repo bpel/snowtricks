@@ -21,21 +21,14 @@ class TrickController extends AbstractController
     public function create(Request $request, ObjectManager $manager, UploadService $upload)
     {
         $userLogged = $this->getUser();
-
         $trick = new Trick();
-
         $form = $this->createForm(TrickType::class, $trick);
-
         $form->handleRequest($request);
-
         if($form->isSubmitted() && $form->isValid()) {
-
             $files = $request->files->get('trick','illustration');
-
             foreach($trick->getVideos() as $video) {
                 $manager->persist($video);
             }
-
             foreach($trick->getIllustrations() as $index => $illustration) {
                 $file = $files['illustrations'][$index]['file'];
                 $newNameFile = $upload->saveFile($file);
@@ -46,10 +39,9 @@ class TrickController extends AbstractController
             $manager->flush();
             $this->addFlash('success','La figure '.$trick->getNameTrick().' à été créé.');
         }
-
         return $this->render('trick/addTrick.html.twig', [
             'form' => $form->createView(),
-            'namePage' => 'trick_create',
+            'namePage' => 'Créer une figure',
             'userLogged' => $userLogged
         ]);
     }
@@ -85,6 +77,7 @@ class TrickController extends AbstractController
             if(empty($trick)) { $this->addFlash('error',"Cette figure n'existe pas"); }
 
             return $this->render('trick/showTrick.html.twig', [
+                'namePage' => "Figure #".$trick->getId(),
                 'trick' => $trick,
                 'messages' => $messages,
                 'form' => $form->createView()
@@ -111,6 +104,11 @@ class TrickController extends AbstractController
         $em = $this->getDoctrine()->getManager();
 
         $trick = $em->getRepository(Trick::class)->findAllOneTrick($id);
+
+        if(empty($trick))
+        {
+            return $this->render('error/trickInvalid.html.twig');
+        }
 
         $form = $this->createForm(TrickType::class, $trick);
 
@@ -139,7 +137,7 @@ class TrickController extends AbstractController
         return $this->render('trick/editTrick.html.twig', [
             'trick' => $trick,
             'form' => $form->createView(),
-            'namePage' => 'trick_edit',
+            'namePage' => 'Modifier figure #'.$trick->getId(),
             'userLogged' => $userLogged
         ]);
     }

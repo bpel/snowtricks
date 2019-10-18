@@ -11,7 +11,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\TrickRepository")
- * @UniqueEntity("nameTrick")
+ * @UniqueEntity("nametrick")
  */
 class Trick
 {
@@ -24,20 +24,20 @@ class Trick
 
     /**
      * @ORM\Column(type="string", length=100, unique=true)
-     * @Assert\NotBlank
+     * @Assert\NotBlank(message="Ce champ est obligatoire")
      */
-    private $nameTrick;
+    private $nametrick;
 
     /**
      * @ORM\ManyToOne(targetEntity="TypeTrick", fetch="LAZY",cascade={"persist"})
      * @JoinColumn(name="typeTrick", referencedColumnName="id")
-     * @Assert\NotNull
+     * @Assert\NotBlank(message="Ce champ est obligatoire")
      */
-    private $typeTrick;
+    private $typetrick;
 
     /**
      * @ORM\Column(type="string", length=100)
-     * @Assert\NotNull
+     * @Assert\NotBlank(message="Ce champ est obligatoire")
      */
     private $description;
 
@@ -47,14 +47,12 @@ class Trick
      * @Assert\Valid
      */
     private $illustrations;
-
     /**
      * @ORM\ManyToMany(targetEntity="Video", fetch="LAZY",cascade={"remove"})
      * @JoinColumn(name="videos", referencedColumnName="id", onDelete="CASCADE")
      * @Assert\Valid
      */
     private $videos;
-
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Message", mappedBy="trick",cascade={"remove"})
      */
@@ -62,8 +60,8 @@ class Trick
 
     public function __construct()
     {
-        $this->videos = new ArrayCollection();
         $this->illustrations = new ArrayCollection();
+        $this->videos = new ArrayCollection();
         $this->messages = new ArrayCollection();
     }
 
@@ -86,33 +84,33 @@ class Trick
     /**
      * @return mixed
      */
-    public function getNameTrick()
+    public function getNametrick()
     {
-        return $this->nameTrick;
+        return $this->nametrick;
     }
 
     /**
-     * @param mixed $nameTrick
+     * @param mixed $nametrick
      */
-    public function setNameTrick($nameTrick): void
+    public function setNametrick($nametrick): void
     {
-        $this->nameTrick = $nameTrick;
+        $this->nametrick = $nametrick;
     }
 
     /**
      * @return mixed
      */
-    public function getTypeTrick()
+    public function getTypetrick()
     {
-        return $this->typeTrick;
+        return $this->typetrick;
     }
 
     /**
-     * @param mixed $typeTrick
+     * @param mixed $typetrick
      */
-    public function setTypeTrick($typeTrick): void
+    public function setTypetrick($typetrick): void
     {
-        $this->typeTrick = $typeTrick;
+        $this->typetrick = $typetrick;
     }
 
     /**
@@ -163,6 +161,22 @@ class Trick
         $this->videos = $videos;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getMessages()
+    {
+        return $this->messages;
+    }
+
+    /**
+     * @param mixed $messages
+     */
+    public function setMessages($messages): void
+    {
+        $this->messages = $messages;
+    }
+
     public function addIllustration(Illustration $illustration): self
     {
         if (!$this->illustrations->contains($illustration)) {
@@ -199,18 +213,11 @@ class Trick
         return $this;
     }
 
-    /**
-     * @return Collection|Message[]
-     */
-    public function getMessages(): Collection
-    {
-        return $this->messages;
-    }
-
     public function addMessage(Message $message): self
     {
         if (!$this->messages->contains($message)) {
             $this->messages[] = $message;
+            $message->setTrick($this);
         }
 
         return $this;
@@ -220,6 +227,10 @@ class Trick
     {
         if ($this->messages->contains($message)) {
             $this->messages->removeElement($message);
+            // set the owning side to null (unless already changed)
+            if ($message->getTrick() === $this) {
+                $message->setTrick(null);
+            }
         }
 
         return $this;

@@ -30,9 +30,14 @@ class UserController extends AbstractController
 
         $users = $em->getRepository(User::class)->findAll();
 
+        if (empty($users))
+        {
+            $this->addFlash('info','Aucun utilisateur à afficher.');
+        }
+
         return $this->render('user/listUsers.html.twig', [
             'users' => $users,
-            'namePage' => 'user_list'
+            'namePage' => 'Liste des utilisateurs'
         ]);
     }
     /**
@@ -55,9 +60,15 @@ class UserController extends AbstractController
             $manager->flush();
         }
 
+        if($form->isSubmitted() && !$form->isValid())
+        {
+            dump($form);
+            dump($form->getConfig());
+        }
+
         return $this->render('user/register.html.twig', [
             'form' => $form->createView(),
-            'namePage' => 'user_register'
+            'namePage' => 'Inscription'
         ]);
     }
     /**
@@ -70,12 +81,12 @@ class UserController extends AbstractController
         if(!empty($error))
         {
             $emailAdress = $authenticationUtils->getLastUsername();
-            $error = $error->getMessage();
+            $error = "Identifiants invalides!";
         }
 
         return $this->render('user/login.html.twig', [
             'error' => $error,
-            'namePage' => 'user_login',
+            'namePage' => 'Connexion',
             'emailAdress' => $emailAdress
         ]);
     }
@@ -103,7 +114,7 @@ class UserController extends AbstractController
         }
 
             return $this->render('user/editPassword.html.twig', [
-                'namePage' => 'user_password_edit',
+                'namePage' => 'Modifier mot de passe',
                 'formEditPassword' => $formEditPassword->createView(),
                 'errors' => $formEditPassword->getErrors()
             ]);
@@ -145,7 +156,7 @@ class UserController extends AbstractController
             }
 
             return $this->render('user/editIllustration.html.twig', [
-                'namePage' => 'user_illustration_edit',
+                'namePage' => 'Modifier illustration',
                 'user' => $this->getUser(),
                 'formEditIllustration' => $formEditIllustration->createView()
             ]);
@@ -161,7 +172,7 @@ class UserController extends AbstractController
     {
         if ($this->userLogged()) {
             return $this->render('user/profile.html.twig', [
-                'namePage' => 'user_profile',
+                'namePage' => 'Profil',
             ]);
         }
         return $this->redirectToRoute('error_page_protected');
@@ -193,7 +204,7 @@ class UserController extends AbstractController
         }
 
         return $this->render('user/passwordLost.html.twig', [
-            'namePage' => 'user_password_lost',
+            'namePage' => 'Mot de passe perdu',
             'user' => $this->getUser(),
             'formPasswordLost' => $formPasswordLost->createView(),
         ]);
@@ -210,7 +221,7 @@ class UserController extends AbstractController
             $this->addFlash('error',$error);
 
             return $this->render('user/passwordRecovery.html.twig', [
-                'namePage' => 'user_password_recovery_token',
+                'namePage' => 'Récupération du compte',
                 'user' => $this->getUser()
             ]);
         }
@@ -229,7 +240,7 @@ class UserController extends AbstractController
         }
 
         return $this->render('user/passwordRecovery.html.twig', [
-            'namePage' => 'user_password_recovery_token',
+            'namePage' => 'Récupération du compte',
             'user' => $this->getUser(),
             'formPasswordChange' => $formPasswordChange->createView(),
             'message' => $message

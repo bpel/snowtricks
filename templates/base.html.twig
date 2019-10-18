@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>{% block title %}SnowTricks!{% endblock %}</title>
+        <title>SnowTricks {% if namePage is defined %}- {{ namePage }}{% endif %}</title>
         {% block stylesheets %}  {{ encore_entry_link_tags('app') }} {% endblock %}
     </head>
     <body>
@@ -12,9 +12,11 @@
         {% block navbar %} {% include 'navbar.html.twig' %} {% endblock %}
             <div class="my-3 my-md-5">
                 <div class="container">
+                    {% if namePage is defined %}
                     <div class="page-header">
-                        <h1 class="page-title">{% if namePage is defined %}{{ namePage }}{% endif %}</h1>
+                        <h1 class="page-title">{{ namePage }}</h1>
                     </div>
+                    {% endif %}
                     {% for message in app.flashes('error') %}
                         <div class="alert alert-icon alert-danger" role="alert"><i class="fas fa-times-circle"></i>{{ message }}</div>
                     {% endfor %}

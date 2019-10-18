@@ -1,4 +1,3 @@
-
 {% extends 'base.html.twig' %}
 
 {% form_theme form _self %}
@@ -25,54 +24,37 @@
     {% block script %}
 
         <script>
-
             const illustrationsNb = $('.form-group .form-group-trick-illustration').length;
             $("#widgets-counter-illustrations").val(illustrationsNb);
-
             $('#add-illustration').click(function () {
-
                 const indexIllustration = +$('#widgets-counter-illustrations').val();
-
                 const tmpIllustration = $('#trick_illustrations').data('prototype').replace(/__name__/g, indexIllustration);
-
                 $('#trick_illustrations').append(tmpIllustration);
-
                 $('#widgets-counter-illustrations').val(indexIllustration + 1);
-
                 handleDeleteButtons();
                 handleUploadButtons();
             });
-
             const videosNb = $('.form-group .form-group-trick-video').length;
             $("#widgets-counter-videos").val(videosNb);
-
             $('#add-video').click(function () {
                 const indexVideo = +$('#widgets-counter-videos').val();
-
                 const tmpVideo = $('#trick_videos').data('prototype').replace(/__name__/g, indexVideo);
-
                 $('#trick_videos').append(tmpVideo);
-
                 $('#widgets-counter-videos').val(indexVideo + 1);
-
                 handleDeleteButtons();
                 handleUploadButtons();
             });
-
             function handleDeleteButtons(){
                 $('button[data-action="delete"]').click(function () {
                     const target = this.dataset.target;
                     $(target).remove();
                 })
             }
-
             function handleUploadButtons(){
                 $("input[type=file]").change(function (e){$(this).next('.custom-file-label').text(e.target.files[0].name);})
             }
-
             handleDeleteButtons();
             handleUploadButtons();
-
         </script>
 
     {% endblock %}
@@ -98,7 +80,6 @@
                 {{ form_widget(form.file, { 'attr': {'placeholder': form.vars.value.filename|default("Sélectionner un fichier") } }) }}
             </div>
             <div class="col">
-                <button type="button" class="btn btn-primary preview-button-trick" data-action="preview" data-target="#{{ id }}"><i class="far fa-image"></i></button>
                 <button type="button" class="btn btn-danger delete-button-trick" data-action="delete" data-target="#{{ id }}"><i class="fas fa-trash"></i></button>
             </div>
         </div>
@@ -116,7 +97,6 @@
                 {{ form_widget(form.platformVideo) }}
             </div>
             <div class="col col-sm-3">
-                <button type="button" class="btn btn-primary preview-button-trick" data-action="preview" data-target="#{{ id }}"><i class="far fa-video"></i></button>
                 <button type="button" class="btn btn-danger delete-button-trick" data-action="delete" data-target="#{{ id }}"><i class="fas fa-trash"></i></button>
             </div>
         </div>

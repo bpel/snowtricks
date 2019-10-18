@@ -10,16 +10,13 @@
                 <h3 class="page-title mb-5">{{ app.user.nameuser }} {{ app.user.lastnameuser }}</h3>
                 <div>
                     <div class="list-group list-group-transparent mb-0">
-                        <a href="{{ path('user_profile') }}" {% if namePage == "user_profile" %} class="list-group-item list-group-item-action d-flex align-items-center active" {% else %}
-                            class="list-group-item list-group-item-action d-flex align-items-center" {% endif %}>
+                        <a href="{{ path('user_profile') }}" class="list-group-item list-group-item-action d-flex align-items-center">
                             <span class="icon mr-3"><i class="fa fa-user"></i></span>Mes informations
                         </a>
-                        <a href="{{ path('user_password_edit') }}" {% if namePage == "user_password_edit" %} class="list-group-item list-group-item-action d-flex align-items-center active" {% else %}
-                            class="list-group-item list-group-item-action d-flex align-items-center" {% endif %}>
+                        <a href="{{ path('user_password_edit') }}" class="list-group-item list-group-item-action d-flex align-items-center">
                             <span class="icon mr-3"><i class="fa fa-user-edit"></i></span>Modifier mot de passe
                         </a>
-                        <a href="{{ path('user_illustration_edit') }}" {% if namePage == "user_illustration_edit" %} class="list-group-item list-group-item-action d-flex align-items-center active" {% else %}
-                            class="list-group-item list-group-item-action d-flex align-items-center" {% endif %}>
+                        <a href="{{ path('user_illustration_edit') }}" class="list-group-item list-group-item-action d-flex align-items-center active">
                             <span class="icon mr-3"><i class="fa fa-upload"></i></span>Modifier image profile
                         </a>
                     </div>
