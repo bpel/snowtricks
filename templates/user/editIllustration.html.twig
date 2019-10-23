@@ -29,7 +29,6 @@
                     </div>
                     <div class="card-body">
                         {% if user.illustration is defined and user.illustration is not empty %}
-                            <img id="illustration-edit-user" src="{{ asset("build/img/")}}{{ user.illustration.filename }}" alt="img-profile-user">
                             Illustration actuelle : {{ user.illustration.filename }}
                         {% else %}
                             Pas d'image de profil

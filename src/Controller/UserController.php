@@ -141,6 +141,7 @@ class UserController extends AbstractController
                     $illustrationUser->setFilename($nameFileUploded);
 
                     $user->setIllustration($illustrationUser);
+                    $manager->persist($illustrationUser);
                     $manager->persist($user);
                     $manager->flush();
                     $this->addFlash('success',"L'image de profil à bien été modifié.");

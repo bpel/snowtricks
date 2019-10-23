@@ -42,7 +42,7 @@ class User implements UserInterface
 
     /**
      * @ORM\ManyToOne(targetEntity="Illustration", fetch="EAGER",cascade={"remove"})
-     * @JoinColumn(name="illustration", referencedColumnName="id", nullable=true)
+     * @JoinColumn(name="illustration", referencedColumnName="id", onDelete="CASCADE")
      */
     private $illustration;
 
