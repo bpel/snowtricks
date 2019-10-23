@@ -58,12 +58,8 @@ class UserController extends AbstractController
 
             $manager->persist($user);
             $manager->flush();
-        }
-
-        if($form->isSubmitted() && !$form->isValid())
-        {
-            dump($form);
-            dump($form->getConfig());
+            $this->addFlash('success','Compte créé avec succès');
+            return $this->redirectToRoute("user_login");
         }
 
         return $this->render('user/register.html.twig', [

@@ -97,7 +97,6 @@
                 {{ form_widget(form.file, { 'attr': {'placeholder': form.vars.value.filename|default("Sélectionner un fichier") } }) }}
             </div>
             <div class="col">
-                <button type="button" class="btn btn-primary preview-button-trick" data-action="preview" data-target="#{{ id }}"><i class="far fa-image"></i></button>
                 <button type="button" class="btn btn-danger delete-button-trick" data-action="delete" data-target="#{{ id }}"><i class="fas fa-trash"></i></button>
             </div>
         </div>
@@ -115,7 +114,6 @@
                 {{ form_widget(form.platformVideo) }}
             </div>
             <div class="col col-sm-3">
-                <button type="button" class="btn btn-primary preview-button-trick" data-action="preview" data-target="#{{ id }}"><i class="far fa-video"></i></button>
                 <button type="button" class="btn btn-danger delete-button-trick" data-action="delete" data-target="#{{ id }}"><i class="fas fa-trash"></i></button>
             </div>
         </div>
