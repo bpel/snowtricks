@@ -56,6 +56,11 @@ class TrickController extends AbstractController
 
         $trick = $em->getRepository(Trick::class)->findAllOneTrick($id);
 
+        if(empty($trick))
+        {
+            $this->addFlash('info',"Cette figure n'existe pas.");
+        }
+
         if(!empty($this->getUser()))
         {
             $message = new Message();

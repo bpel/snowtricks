@@ -10,7 +10,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
- * @UniqueEntity("email")
+ * @UniqueEntity("email",message="Cette adresse email est déjà utilisée")
  */
 class User implements UserInterface
 {
@@ -42,7 +42,7 @@ class User implements UserInterface
 
     /**
      * @ORM\ManyToOne(targetEntity="Illustration", fetch="EAGER",cascade={"remove"})
-     * @JoinColumn(name="illustration", referencedColumnName="id", nullable=true)
+     * @JoinColumn(name="illustration", referencedColumnName="id", onDelete="CASCADE")
      */
     private $illustration;
 
